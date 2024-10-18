@@ -1,5 +1,5 @@
 from src.utils import get_retriever
-from llama_index.vector_stores.types import ExactMatchFilter
+from llama_index.core.vector_stores import ExactMatchFilter
 from tenacity import retry, wait_random, stop_after_attempt
 
 @retry(wait=wait_random(min=1, max=5), stop=stop_after_attempt(5))
@@ -19,19 +19,23 @@ async def find_restaurant_pages(
         food_requested=food_requested,
         other_information=other_information,
     )
-
+    # print("query: ",query)
     retriever = get_retriever(
         index_name="auto-food-order",
         CONFIG=CONFIG,
         top_k=quantity,
         filter=[ExactMatchFilter(key="search_type", value="restaurant")]
     )
-
-    response = retriever.retrieve(query)
-    
+    print("retriever: ",retriever)
+    try:
+        response = retriever.retrieve(query)
+    except Exception as e:
+        print("error: ",e)
+    print("response: ",response)
     # return dict(dict(response[0])["node"])["metadata"]
     for i in range(len(response)):
         response[i] = dict(dict(response[i])["node"])["metadata"]
+    print("find good restaurant: ",response)
     return response
 
 

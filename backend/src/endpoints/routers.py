@@ -37,7 +37,6 @@ def create_router(handler: MainHandler, CONFIG):
     @router.post("/chat/send_message")
     async def send_message(prompt_request: ChatRequest):
         """Receives the chatlog from the user and answers"""
-
         # Initializes the handler
         prompt_handler = handler.prompt_handler
         
@@ -57,25 +56,43 @@ def create_router(handler: MainHandler, CONFIG):
                 functions=functions,
                 client=client
             )
-            
+            # print("prompt_response: ", prompt_response)
             # Formats and returns
             response = prompt_handler.prepare_response(prompt_response)
-
+            null_keys=[]
+            if response["function_call"]:
+                function_call_properties = jsonable_encoder(response["function_call"])
+                function_arguments = function_call_properties["args"]
+                null_keys = [key for key, value in function_arguments.items() if value is None or value=="null"]
+                print("---------------------------------------")
+                print(len(null_keys))
+            # if (len(null_keys) > 2):
+                # messages_again= prompt_handler.add_prompt(messages,response)
+                # response_again = await openai_service.chat_completion(
+                #     messages=messages_again,
+                #     CONFIG=CONFIG,
+                #     functions=functions,
+                #     client=client
+                # )
+                # response["function_call"]=None
+                # response["response"]=prompt_handler.filter_response(response_again)["text"]
+                # print(prompt_handler.filter_response(response_again))
+                print("----------------------------------------------------- end")
         except Exception as e:
-            print(e)
             response = {"response": "Oops there was an error, please try again", "function_call": None}
-
+        # print(response)
         return response
     
     @router.post("/chat/function_call")
     async def function_call(function_call: FunctionCall):
         """Receives the function call from the frontend and executes it"""
-
+        print("--------------------------------")
         # Preparing functions
         function_call_properties = jsonable_encoder(function_call)
         function_name = function_call_properties["name"]
-        function_arguments = json.loads(function_call_properties["arguments"])
-
+        print("function_name: ",function_name)
+        function_arguments = function_call_properties["args"]
+        print("function_arguments: ",function_arguments)
         # Configuring functions to be called - it should match the get_functions_signatures, otherwise we need to bypass it
         available_functions = {
             # Obs: all functions need to be async
@@ -91,10 +108,10 @@ def create_router(handler: MainHandler, CONFIG):
             "place_order": lambda _: functions.dummy_function(), # dummy function - no need of information
             "activate_handsfree": lambda _: functions.dummy_function(), # dummy function - no need of information
         }
-
+            
         # Calling the function selected
         function_response = await available_functions[function_name](function_arguments)
-        
+        print(function_response)
         return {"response": function_response}
 
     @router.post("/chat/transcribe")

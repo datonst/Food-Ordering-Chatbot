@@ -47,7 +47,7 @@
 </template>
 
   <script>
-  import NavBar from "./Navbar/NavBar.vue"
+  import NavBar from "./NavBar/NavBar.vue"
   import ShoppingCart from "./ShoppingCart/ShoppingCart.vue"
   import ChatContainer from "./Chatbot/ChatContainer.vue";
   import RestaurantsContainer from "./Restaurants/RestaurantsContainer.vue"

@@ -4,7 +4,7 @@ from typing import Optional, List, Any, Dict
 ## OpenAI schema for Chat Completion
 class FunctionCall(BaseModel):
     name: str
-    arguments: str
+    args: Any
 
 class Message(BaseModel):
     content: str

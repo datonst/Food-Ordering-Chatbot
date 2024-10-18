@@ -18,22 +18,22 @@ except:
     from .database import SessionLocal
 
 # Llamaindex
-from llama_index.vector_stores import PineconeVectorStore, SimpleVectorStore 
-from llama_index.storage.storage_context import StorageContext
-from llama_index import VectorStoreIndex, Document, ServiceContext
-from llama_index.llms import OpenAI
-from llama_index.storage.index_store import SimpleIndexStore
-from llama_index.storage.docstore import SimpleDocumentStore
-from llama_index import load_index_from_storage
-from llama_index.retrievers import BM25Retriever, BaseRetriever
-from llama_index.vector_stores.types import MetadataFilters, ExactMatchFilter
 
+# imports
+from llama_index.embeddings.gemini import GeminiEmbedding
+from llama_index.core.storage import StorageContext
+from llama_index.core import VectorStoreIndex, Document, ServiceContext
+from llama_index.core import  SimpleDirectoryReader
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.core.vector_stores import ExactMatchFilter
+from llama_index.core import Settings
+import google.generativeai as genai
 # VDBs
 #import weaviate
 import pinecone
-
 ENVIRONMENT = "gcp-starter"
 INDEX_NAME = "auto-food-order"
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
 def process_restaurants():
     # Reading SQLite db
@@ -93,29 +93,20 @@ def process_restaurants():
     storage_context = StorageContext.from_defaults(
         vector_store=vector_store,
     )
-
-    llm = OpenAI(model="gpt-4")
-
-    service_context = ServiceContext.from_defaults(chunk_size=512, llm=llm)
-
-    nodes = service_context.node_parser.get_nodes_from_documents(documents)
-
-    storage_context.docstore.add_documents(nodes)
-
+    model_name = "models/text-embedding-004"
+    embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
+    # llm = OpenAI(model="gpt-4")
+    Settings.embed_model = embed_model
+    
     index = VectorStoreIndex.from_documents(
         documents=documents,
-        # vector_store=vector_store,
         storage_context=storage_context,
-        service_context=service_context,
     )
-
     # index.index_struct.index_id 
 
-    return index, nodes
+    return index
 
 def load_index():
-
-
     vector_store = PineconeVectorStore(
         index_name=INDEX_NAME,
         environment=ENVIRONMENT,
@@ -131,7 +122,7 @@ def load_index():
 
 def main():
     # Testing it
-    index, nodes = process_restaurants()
+    index= process_restaurants()
     idx = load_index()
     
     # qe = idx.as_query_engine()
@@ -153,6 +144,15 @@ def main():
         "hsnw": [],
     }
     query = "testing, I would like to order a large pizza with mango, thai food, taco fiesta"
+    model= genai.GenerativeModel(
+            'gemini-1.5-flash-8b',
+            # tools = functions,
+            # generation_config=genai.GenerationConfig(),
+        )
+    chat = model.start_chat(enable_automatic_function_calling=True,history=[])
+    response = chat.send_message(query)
+    print(response)
+    
     for retriever in [
         (ret, "regular"),
         (ret2, "regular_filtered"),
@@ -180,4 +180,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
