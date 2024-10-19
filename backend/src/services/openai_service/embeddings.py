@@ -19,7 +19,7 @@ async def embeddings(content, CONFIG, client=None):
     # )["data"][0]["embedding"]
     
     # response = client.embeddings.create(**model_args)["data"][0]["embedding"]
-    print("embedding model")
+    # print("embedding model")
     client.configure(api_key=CFG_GEMINI["api_key"])
     response = client.embed_content(model="models/text-embedding-004", content=content)
     print(response)

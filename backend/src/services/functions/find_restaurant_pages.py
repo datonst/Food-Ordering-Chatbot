@@ -26,12 +26,8 @@ async def find_restaurant_pages(
         top_k=quantity,
         filter=[ExactMatchFilter(key="search_type", value="restaurant")]
     )
-    print("retriever: ",retriever)
-    try:
-        response = retriever.retrieve(query)
-    except Exception as e:
-        print("error: ",e)
-    print("response: ",response)
+    # print("retriever: ",retriever)
+    response = retriever.retrieve(query)
     # return dict(dict(response[0])["node"])["metadata"]
     for i in range(len(response)):
         response[i] = dict(dict(response[i])["node"])["metadata"]

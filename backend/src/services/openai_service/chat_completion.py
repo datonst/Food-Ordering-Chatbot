@@ -22,9 +22,10 @@ async def chat_completion(messages, CONFIG, functions=[], client=None):
         tools = functions,
         generation_config=client.GenerationConfig(**model_args),
     )
-    chat = model.start_chat(enable_automatic_function_calling=True,history=messages[:-1])
+    # print(messages)
+    chat = model.start_chat(enable_automatic_function_calling=True, history = messages[:-1])
     response = chat.send_message(messages[-1]["parts"])
-    # print(response)
+    print(response)
     return response
     # Incrementing in cases of function calling
     # if len(functions) > 0:
