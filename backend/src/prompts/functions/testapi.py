@@ -30,7 +30,7 @@ print(system_prompt)
 chat = model.start_chat(enable_automatic_function_calling=True,history=[])
 prompt= "tìm cho tôi một cửa hàng nhật bản với đồ ăn pizza ngon"
 response = chat.send_message(system_prompt+prompt)
-
+model.generate_content()
 
 response=json.dumps(response, indent=4)
 response_dict = json.loads(response)

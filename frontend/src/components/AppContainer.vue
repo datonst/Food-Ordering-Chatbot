@@ -361,7 +361,7 @@
             console.log(functionCallResponseContent);
 
             resolve({
-              role: "function",
+              role: "model",
               content: functionCallResponseContent,
               name: functionCallSignal.name,
             });
@@ -373,7 +373,7 @@
       },
       handleGetRestaurant: function(functionCallResponse){
         this.botTypingMsg = "Searching for restaurants..."
-        let msg = "@agent-action: You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
+        let msg = " You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
         return msg
         
       },
@@ -382,14 +382,14 @@
         // restaurantId in string format to int
         let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
         this.$refs.restaurantsContainer.selectRestaurant(parseInt(restaurantId))
-        let msg = "@agent-action: You opened the restaurant page for " + restaurantId + "!";
+        let msg = " You opened the restaurant page for " + restaurantId + "!";
         console.log(msg)
         return msg
       },
       handleCloseRestaurant: function(functionCallResponse){
         this.botTypingMsg = "Closing restaurant page..."
         this.$refs.restaurantsContainer.deselectRestaurant()
-        let msg = "@agent-action: You closed the restaurant page!";
+        let msg = " You closed the restaurant page!";
         console.log(msg)
         return msg
       },
@@ -416,7 +416,7 @@
         // Opening the shopping cart
         this.openCart()
 
-        return "@agent-action: You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
+        return " You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
       },
 
       handleRemoveFoodFromCart: function(functionCallResponse){
@@ -431,13 +431,13 @@
         let foodItem = shoppingCartItems.find(item => item.uuid === foodId)
         this.openCart()
         this.removeFromCart(foodItem)
-        return "@agent-action: You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
+        return " You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
         // return 
       },
       handlePlaceOrder: function(functionCallResponse){
         this.botTypingMsg = "Placing order..."
         this.$refs.shoppingCart.submitOrder()
-        let msg = "@agent-action: You placed the order!"
+        let msg = " You placed the order!"
         return msg
       },
       handleGetActions: function(functionCallResponse){
@@ -459,10 +459,10 @@
         this.openCart()
         // If the shopping cart is not empty, we show the content
         if (this.shoppingCart.length > 0){
-          let msg = "@agent-action: You opened the shopping cart! Here's the content you founded:" + JSON.stringify(this.shoppingCart)
+          let msg = " You opened the shopping cart! Here's the content you founded:" + JSON.stringify(this.shoppingCart)
           return msg
         } else {
-          let msg = "@agent-action: You opened the shopping cart! It's empty!"
+          let msg = " You opened the shopping cart! It's empty!"
           return msg
         }
         return msg
@@ -470,12 +470,12 @@
       handleCloseShoppingCart: function(functionCallResponse){
         this.botTypingMsg = "Closing the shopping cart..."
         this.closeCart()
-        let msg = "@agent-action: You closed the shopping cart!"
+        let msg = " You closed the shopping cart!"
         return msg
       },
       handleActivateHandsFree: function(functionCallResponse){
         this.botTypingMsg = "Activating handsfree experience..."
-        let msg = "@agent-action: You activated the handsfree voice experience"
+        let msg = " You activated the handsfree voice experience"
         this.handsFreeFlag = true
         return msg
       },
