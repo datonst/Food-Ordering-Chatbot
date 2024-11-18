@@ -1,10 +1,10 @@
 
 try:
     from database import Base, engine
-    from data_models import Restaurant, Foods
+    from data_models import Restaurant, Foods, Users
 except:
     from .database import Base, engine
-    from .data_models import Restaurant, Foods
+    from .data_models import Restaurant, Foods, Users
 
 def main():
     Base.metadata.create_all(bind=engine)
