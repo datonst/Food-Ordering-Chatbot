@@ -109,6 +109,7 @@ def create_router(handler: MainHandler, CONFIG):
         # print(response)
         return response
     
+    # 
     @router.post("/chat/function_call")
     async def function_call(function_call: FunctionCall):
         """Receives the function call from the frontend and executes it"""
@@ -134,7 +135,7 @@ def create_router(handler: MainHandler, CONFIG):
             "place_order": lambda _: functions.dummy_function(), # dummy function - no need of information
             "activate_handsfree": lambda _: functions.dummy_function(), # dummy function - no need of information
         }
-            
+
         # Calling the function selected
         function_response = await available_functions[function_name](function_arguments)
         print(function_response)
