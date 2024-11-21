@@ -1,5 +1,6 @@
 import sys
-sys.path.append('/Users/raiju/chatbot-TTNM/backend')
+sys.path.append('/home/datonst/chatbot-TTNM/backend')
+
 """File containing root routes"""
 from fastapi.routing import APIRouter
 from fastapi import Depends, FastAPI, HTTPException, status
@@ -181,7 +182,7 @@ def create_router(handler: MainHandler, CONFIG):
         foods = db.query(Foods).filter(Foods.restaurant_id == restaurant_id).all()
         return foods
 
-    """@router.post("/Login", response_model=None)
+    @router.post("/login", response_model=None)
     async def login_for_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: Session = Depends(get_db),  # Sửa đúng cú pháp và đảm bảo import chính xác
@@ -197,46 +198,46 @@ def create_router(handler: MainHandler, CONFIG):
         access_token = create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )
-        return Token(access_token=access_token, token_type="bearer")"""
-    
-    @router.post("/login") 
-    async def login(login_form: OAuth2PasswordRequestForm = Depends(),
-        db: Session = Depends(get_db)):
-        user = authenticate_user(get_db, login_form.username, login_form.password)
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": user.username}, expires_delta=access_token_expires
-        )
         return Token(access_token=access_token, token_type="bearer")
     
-    @router.post("/register")
-    async def register(user_data: Register, db: Session = Depends(get_db)):
-        try:
-            user = register_user(db, user_data)
-            return {"msg": "User registered successfully", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
+    # @router.post("/login") 
+    # async def login(login_form: OAuth2PasswordRequestForm = Depends(),
+    #     db: Session = Depends(get_db)):
+    #     user = authenticate_user(get_db, login_form.username, login_form.password)
+    #     if not user:
+    #         raise HTTPException(
+    #             status_code=status.HTTP_401_UNAUTHORIZED,
+    #             detail="Incorrect username or password",
+    #             headers={"WWW-Authenticate": "Bearer"},
+    #         )
+    #     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    #     access_token = create_access_token(
+    #         data={"sub": user.username}, expires_delta=access_token_expires
+    #     )
+    #     return Token(access_token=access_token, token_type="bearer")
+    
+    # @router.post("/register")
+    # async def register(user_data: Register, db: Session = Depends(get_db)):
+    #     try:
+    #         user = register_user(db, user_data)
+    #         return {"msg": "User registered successfully", "user": user}
+    #     except ValueError as e:
+    #         raise HTTPException(status_code=400, detail=str(e))
 
-    @router.post("/login")
-    async def login(login_data: Login, db: Session = Depends(get_db)):
-        try:
-            user = login_user(db, login_data)
-            return {"msg": "Login successful", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
+    # @router.post("/login")
+    # async def login(login_data: Login, db: Session = Depends(get_db)):
+    #     try:
+    #         user = login_user(db, login_data)
+    #         return {"msg": "Login successful", "user": user}
+    #     except ValueError as e:
+    #         raise HTTPException(status_code=400, detail=str(e))
 
-    @router.put("/update-profile")
-    async def update_profile(user_id: int, update_data: UpdateProfile, db: Session = Depends(get_db)):
-        try:
-            user = update_user_profile(db, user_id, update_data)
-            return {"msg": "User profile updated", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=404, detail=str(e))
+    # @router.put("/update-profile")
+    # async def update_profile(user_id: int, update_data: UpdateProfile, db: Session = Depends(get_db)):
+    #     try:
+    #         user = update_user_profile(db, user_id, update_data)
+    #         return {"msg": "User profile updated", "user": user}
+    #     except ValueError as e:
+    #         raise HTTPException(status_code=404, detail=str(e))
 
     return router
