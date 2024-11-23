@@ -1,4 +1,6 @@
 <template>
+  <Toast ref="toast" />
+
   <div class="shopping-cart-container">
     <div class="shopping-cart-header sticky-top">
       <button class="close-btn" @click="closeFrame">
@@ -39,11 +41,13 @@
   import "../styles/shoppingcart.css"
   import FoodItem from "../Common/FoodItem.vue"
   import LoadingSpinner from "../Common/LoadingSpinner.vue"
+  import Toast from "../NavBar/Toast.vue"
 
   export default {
     components: {
       FoodItem,
-      LoadingSpinner
+      LoadingSpinner,
+      Toast
     },    
     props: {
       shoppingCart: {
@@ -67,6 +71,12 @@
       },
     },
     methods: {
+      toggleAuthMode() {
+        // 토스트 알림 초기화
+        if (this.$refs.toast) {
+          this.$refs.toast.clearToast();
+        }
+      },
       registerAction(msg) {
         this.$emit("register-action", msg)
       },
@@ -84,14 +94,39 @@
         this.$emit('remove-from-cart', item)
       },
       submitOrder() {
+
         this.isLoading = true;
         this.placeholderMsg = "Placing your order..."
+        
         setTimeout(() => {
           this.isLoading = false;
           this.placeholderMsg = "Your order has been sent..."
           this.orderStatus = true // Sent order
           this.clearCart()
-        }, 3000); // Simulate an API call with a 5-second delay
+        }, 2500); // Simulate an API call with a 5-second delay
+
+      // Simulate order process with toasts
+      setTimeout(() => {
+        this.$refs.toast.showToast('Order accepted at the store.', 'info');
+      }, 3000);
+
+      setTimeout(() => {
+        this.$refs.toast.showToast('Cooking started at the store.', 'info');
+      }, 6000);
+
+      setTimeout(() => {
+        this.$refs.toast.showToast('Delivery started.', 'info');
+      }, 60000); // 1 minute
+
+      setTimeout(() => {
+        this.$refs.toast.showToast('Order has arrived!', 'info');
+        
+        this.isLoading = false;
+        this.placeholderMsg = "Your order has been sent..."
+        this.orderStatus = true
+        this.clearCart()
+      }, 90000); // 1 minute 30 seconds
+
         this.placeholderMsg = "Place your order..."
         this.registerAction("placed the order as is")
       },

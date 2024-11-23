@@ -1,0 +1,14 @@
+{
+    "users": [
+      {
+        "username": "testuser1",
+        "password": "password123",
+        "phoneNumber": "123-456-7890"
+      },
+      {
+        "username": "testuser2",
+        "password": "password456",
+        "phoneNumber": "098-765-4321"
+      }
+    ]
+  }
