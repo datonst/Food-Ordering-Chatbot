@@ -1,31 +1,40 @@
-/* Styles */
+/* Main Colors */
+:root {
+  --main-bg-color: #d0d0e4;
+  --secondary-bg-color: #a0b0c5;
+  --accent-color: #8ca4ba;
+  --highlight-color: #a5c6d1;
+}
 
+/* Container Styling */
 .app-container {
   display: flex;
   flex-wrap: nowrap;
+  background-color: var(--main-bg-color);
 }
 
-.svg-loader{
-  display:flex;
+.svg-loader {
+  display: flex;
   position: relative;
   align-content: space-around;
   justify-content: center;
-  height: 20px;
-  width: 20px;
+  height: 30px; 
+  width: 30px;
   animation: fadeInSlideRight 0.6s ease forwards;
 }
 
-.loader-svg{
+.loader-svg {
   position: absolute;
   left: 0; right: 0; top: 0; bottom: 0;
   fill: none;
   stroke-width: 5px;
   stroke-linecap: round;
-  stroke: rgb(64, 0, 148);
+  stroke: var(--accent-color);
 }
-.loader-svg.bg{
+
+.loader-svg.bg {
   stroke-width: 8px;
-  stroke: rgb(207, 205, 245);
+  stroke: var(--secondary-bg-color);
 }
 
 .animate{
@@ -49,28 +58,58 @@
   height: 70vh;
   min-height: 70vh;
   max-height: 70vh;
-  border-radius: 10px !important;
-  border: none;
-  border: 1px solid #0000002d;
+  border-radius: 10px;
+  border: 1px solid var(--highlight-color);
+  background-color: var(--secondary-bg-color);
   animation: fadeInSlideUp 1.3s ease forwards;
   animation-delay: 0.4s;
   animation-fill-mode: both;
 }
 
 .card-file-header {
-  border-radius: 10px 10px 0 0 !important;
-  background-color: #ebebeb;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--highlight-color);
 }
 
 .file-header {
   font-size: 12px;
   font-weight: bold;
   color: #ffffff;
-  margin-left:15px;
+  margin-left: 15px;
   left:10px;
   bottom:2px;
 }
 
+/* Chatbot Frame Styling */
+.frame {
+  background-color: var(--main-bg-color);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 16px 20px;
+  max-height: 400px;
+  max-width: 300px;
+  border-radius: 8px;
+  overflow-y: auto;
+  animation: fadeInSlideLeft 0.3s ease forwards;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  color: var(--accent-color);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border-left-color: var(--accent-color);
+}
+
+.card-header {
+  color: white;
+  background: linear-gradient(to top right, var(--accent-color), var(--highlight-color));
+}
+
+/* Text and Button Styling */
 .input-btn {
   right: 5%;
   left: 5%;
@@ -95,7 +134,7 @@
 }
 
 .input-btn:hover {
-  background-color: rgba(0, 0, 0, 0.16) !important;
+  background-color: rgba(0, 0, 0, 0.16);
 }
 
 .input-group {

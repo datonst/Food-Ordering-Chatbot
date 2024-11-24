@@ -1,7 +1,6 @@
 <template>
   <div class="restaurants-container">
     <div v-if="!selectedRestaurant" class="row">
-      <b class="sticky-top" style="background:white;">Restaurants nearby your address</b>
       <restaurant-preview-card
         v-for="(restaurant, index) in restaurants"
         :key="restaurant.uuid"
@@ -11,14 +10,16 @@
         class="col-md-4 col-lg-3"
       ></restaurant-preview-card>
     </div>
-    <restaurant-full-view
+    <div class="row_full">
+      <restaurant-full-view
       ref="restaurantFullView"
       v-show="selectedRestaurant"
       :restaurant="selectedRestaurant"
       @go-back="deselectRestaurant"
       @add-to-cart="addToCart"
       @register-action="registerAction"
-    ></restaurant-full-view>
+      ></restaurant-full-view>
+    </div>
   </div>
 </template>
 

@@ -1,36 +1,502 @@
 <template>
-    <header class="navbar navbar-dark sticky-top">
-        <div class="nav navbar pt-2">
-            <div class="navbar-brand shadow-none d-flex align-items-center">
-                <img class="navbar-logo" src="@/assets/favicon.png" />
-                <h2 class="navbar-title mb-0">
-                  Discover restaurants and order food online using a virtual assistant 
-                </h2>
+
+  <header class="navbar navbar-dark sticky-top">
+    <div class="nav navbar pt-2">
+      <div class="navbar-brand shadow-none d-flex align-items-center">
+        <img class="navbar-logo" src="@/assets/favicon.png" />
+      </div>
+    </div>
+
+    <Toast ref="toast" />
+
+    <!-- Center Section with About Us & Shops Links -->
+    <div class="center-container">
+      <div class="shops" @click="closeAboutUs">SHOPS</div>
+      <div class="aboutUs" @click="toggleAboutUs">ABOUT US</div>
+    </div>
+
+    <div class="right-container">
+      <!-- 로그인한 상태에서는 유저의 이름과 로그아웃 버튼을 표시 -->
+      <div v-if="isLoggedIn" class="user-info">
+        <span class="username">{{ username }}</span>
+        <img class="user-logo" src="@/assets/user.png" alt="User" @click="toggleProfileModal" />
+      </div>
+
+      <!-- 로그인되지 않은 상태에서는 로그인 아이콘 표시 -->
+      <div v-else class="login" @click="toggleLogin">
+        <img class="login-logo" src="@/assets/log-in.png" alt="Login"/>
+      </div>
+      <div class="shopping-cart" @click="$emit('open-cart')">
+        <span v-if="cartItemCount" class="cart-item-count">{{ cartItemCount }}</span>
+        <img class="shopping-cart-logo" src="@/assets/shopping-cart-icon.png" alt="Shopping Cart" />
+      </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div v-if="showAboutUs" class="about-modal-overlay" @click.self="toggleAboutUs">
+      <div class="categories-modal-content modal-content">
+        <img class="close-btn" src="@/assets/close-button.png" @click="toggleAboutUs" />
+        <section class="categories" id="categories">
+          <div class="center-text">
+            <strong>Categories</strong>
+            <h2>Explore Culinary Delights</h2>
+          </div>
+          <div ref="categoriesContainer" class="categories-content">
+            <div class="box">
+              <div class="box-img">
+                <img src="@/assets/images/categories/food.webp" loading="lazy" width="501px" height="500px" alt="Grilled steak served with a fresh garden salad and a side of mayonnaise">
+              </div>
+              <h3>World Bites</h3>
+              <p>Experience global flavors with our International Delights, a curated journey through diverse cuisines that transport your taste buds.</p>
             </div>
-        </div>
-        <div class="shopping-cart" @click="$emit('open-cart')">
-            <span v-if="cartItemCount" class="cart-item-count">{{ cartItemCount }}</span>
-            <img class="shopping-cart-logo" src="@/assets/shopping-cart-icon.png" alt="Shopping Cart" />
-        </div>
-    </header>
+            <div class="box">
+              <div class="box-img">
+                <img src="@/assets/images/categories/burger.webp" loading="lazy" width="600px" height="600px" alt="Close-up of a cheeseburger with lettuce, tomato, onion, pickles, and a sesame seed bun">
+              </div>
+              <h3>Gourmet Burgers</h3>
+              <p>Elevate your burger experience with our Gourmet Burgers, crafted with premium ingredients for a unique and savory taste adventure.</p>
+            </div>
+            <div class="box">
+              <div class="box-img">
+                <img src="@/assets/images/categories/pastries.webp" loading="lazy" width="512px" height="512px" alt="Plate of assorted pastries and donuts with various toppings and decorations">
+              </div>
+              <h3>Sweet Temptations</h3>
+              <p>Indulge in Sweet Temptations, a paradise of heavenly pastries and desserts that promise to delight your senses.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="history" id="history">
+          <div ref="historyImg" class="history-img">
+              <img src="@/assets/images/pizza.webp"
+                  loading="lazy"
+                  width="400px"
+                  height="315px"
+                  alt="">
+          </div>
+
+          <div ref="historyText" class="history-text">
+              <h1 class="history-title">Our History</h1>
+              <h2>Discover Our Glory begenning</h2>
+              <p>We promise you'll enjoy every sweet moment to find your favourite. Eat what you love and save your time.</p>
+              <a href="#" class="btn">Learn More</a>
+          </div>
+        </section>
+
+        <section class="services" id="services">
+          <div class="center-text">
+              <h1 class="services-title">Offering</h1>
+              <h2 class="service-subtitle">Our amazing services</h2>
+          </div>
+          
+          <div ref="servicesContainer" class="services-container">
+              <div class="services-content">
+                  <img class="services-img" src="@/assets/images/services/dish.png" loading="lazy" alt="dish icon">
+                  <h3 class="services-title">Excellent food</h3>
+                  <p class="services-description">Savor the excellence in every bite at our establishment. Our chefs craft each dish with precision, delivering a delightful culinary experience that sets the standard for quality.</p>
+              </div>
+
+              <div class="services-content">
+                  <img class="services-img" src="@/assets/images/services/pizza.png" loading="lazy" alt="pizza icon">
+                  <h3 class="services-title">Fast food</h3>
+                  <p class="services-description">Experience quick and satisfying flavors with our fast food service. Enjoy deliciousness on the go without compromising speed. Taste the convenience of a swift culinary journey.</p>
+              </div>
+
+              <div class="services-content">
+                  <img class="services-img" src="@/assets/images/services/truck.png" loading="lazy" alt="truck icon">
+                  <h3 class="services-title">Delivery</h3>
+                  <p class="services-description">Bringing exceptional flavors to your doorstep, our delivery service ensures a seamless and flavorful experience. Enjoy our delectable creations from the comfort of your home, delivered with reliability and convenience.</p>
+              </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div v-if="showLogin" class="login-modal-overlay" @click.self="toggleLogin">
+      <div class="auth-form modal-content">
+        <img class="close-btn" src="@/assets/close-button.png" @click="toggleLogin"/>
+        <h3>{{showSignup ? 'Sign Up' : 'Login'}}</h3>
+        <form @submit.prevent="showSignup ? handleSignup : handleLogin">
+          <input 
+            v-if="showSignup" 
+            type="text" 
+            placeholder="Full Name" 
+            v-model="fullName" 
+            required
+          />
+          <input 
+            type="text" 
+            placeholder="Username" 
+            v-model="username" 
+            required
+          />
+          <input 
+            v-if="showSignup" 
+            type="email" 
+            placeholder="Email" 
+            v-model="email" 
+            required
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            v-model="password" 
+            required
+          />
+          <input 
+            v-if="showSignup" 
+            type="password" 
+            placeholder="Confirm Password" 
+            v-model="confirmPassword" 
+            required
+          />
+          <button type="submit">{{showSignup ? 'Sign up' : 'Login'}}</button>
+        </form>
+        <button class="toggle-btn" @click="toggleSignup">
+          {{ showSignup ? "Already have an account? Login" : "Don't have an account? Sign Up" }}
+        </button>
+      </div>
+    </div>
+    
+    <!-- Profile Modal -->
+    <div v-if="showProfileModal" class="profile-modal-overlay" @click.self="toggleProfileModal">
+      <div class="profile-modal modal-content">
+        <img class="close-btn" src="@/assets/close-button.png" @click="toggleProfileModal"/>
+        <p class="profile">Profile</p>
+        <img class="user-logo" src="@/assets/user.png" alt="User"/>
+        <p>{{ username }}</p>
+        <button @click="openEditProfile" class="editProfile-btn">Edit Profile</button>
+        <button @click="logout" class="loggedin-logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div v-if="showEditProfileModal" class="edit-modal-overlay" @click.self="closeEditProfile">
+      <div class="edit-profile-modal modal-content">
+        <img class="close-btn" src="@/assets/close-button.png" @click="closeEditProfile"/>
+        <h3 class="editProfile">Edit Profile</h3>
+        <form @submit.prevent="handleEditProfile" class="handleEditProfile">
+          <p class="newUsername">New Username</p>
+          <input type="text" placeholder="New Username" v-model="newUsername" required/>
+          <p class="newPassword">New Password</p>
+          <input type="password" placeholder="New Password" v-model="newPassword" required/>
+          <div class="saveOrCancle-btn">
+            <button type="submit" class="saveChanges">Save Changes</button>
+            <button class="cancle" @click="closeEditProfile">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script>
 import "../styles/navbar.css"
 import "../styles/shoppingcart.css"
+import "../styles/auth.css"
+import "../styles/aboutUs.css"
+import "../styles/profile.css"
+import Toast from './Toast.vue'
+import axios from "axios";
 
 export default {
   name: "NavBar",
+  components: {
+    Toast
+  },
   props: {
     shoppingCart: {
       type: Array,
       default: () => [],
     },
   },
+  data() {
+    return {
+      showLogin: false,
+      showSignup: false,
+      showAboutUs: false,
+      isLoggedIn: false,
+      showProfileModal: false,
+      showEditProfileModal: false,
+      username: '',
+      password: '',
+      email: '',
+      fullName: '',
+      confirmPassword: '',
+      newUsername: '',
+      newPassword: '',
+      token: null,
+    }
+  },
   computed: {
     cartItemCount() {
       return this.shoppingCart.length;
     },
   },
+  created() {
+    // Check for existing token
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.token = token;
+      this.isLoggedIn = true;
+      this.fetchUserProfile();
+    }
+  },
+  methods: {
+    toggleAuthMode() {
+      // 모드 전환 전에 이전 이벤트 리스너 제거
+      this.removeAuthEventListeners();
+      this.showSignup = !this.showSignup;
+      this.resetForm();
+      
+      if (this.$refs.toast) {
+        this.$refs.toast.clearToast();
+      }
+    },
+    removeAuthEventListeners() {
+      const form = document.querySelector('.auth-form form');
+      if (form) {
+        form.removeEventListener('submit', this.handleLogin);
+        form.removeEventListener('submit', this.handleSignup);
+      }
+    },
+
+    toggleLogin() {
+      this.showLogin = !this.showLogin;
+      this.showSignup = false;
+    },
+
+    toggleSignup() {
+      this.showSignup = !this.showSignup;
+      this.showLogin = true;
+    },
+
+    toggleAboutUs() {
+      this.showAboutUs = !this.showAboutUs;
+    },
+    closeAboutUs() {
+      this.showAboutUs = false;
+    },
+
+    async handleSignup(event) {
+      event.preventDefault();
+      
+      if (this.password !== this.confirmPassword) {
+        this.$refs.toast.showToast('Passwords do not match', 'error');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('username', this.username);
+      formData.append('email', this.email);
+      formData.append('fullname', this.fullName);
+      formData.append('password', this.password);
+
+      try {
+        await axios.post('http://localhost:8080/register', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        this.$refs.toast.showToast('Account created successfully! Please log in.', 'success');
+        this.showSignup = false;
+        this.showLogin = true;
+        this.resetForm();
+      } catch (error) {
+        this.$refs.toast.showToast(error.response?.data?.detail || 'Registration failed', 'error');
+      }
+    },
+
+    async handleLogin(event) {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append('username', this.username);
+      formData.append('password', this.password);
+
+      try {
+        const response = await axios.post('http://localhost:8080/login', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        const { access_token } = response.data;
+        this.token = access_token;
+        localStorage.setItem('token', access_token);
+        
+        this.isLoggedIn = true;
+        await this.fetchUserProfile();
+        
+        this.$refs.toast.showToast(`Welcome back, ${this.username}!`, 'success');
+        this.showLogin = false;
+        this.resetForm();
+      } catch (error) {
+        this.$refs.toast.showToast('Invalid username or password', 'error');
+      }
+    },
+
+    async fetchUserProfile() {
+      try {
+        const response = await axios.get('http://localhost:8080/profile', {
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        });
+        const userData = response.data;
+        this.username = userData.username;
+        this.email = userData.email;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        this.logout();
+      }
+    },
+    resetForm() {
+      this.username = '';
+      this.password = '';
+      this.email = '';
+      this.fullName = '';
+      this.confirmPassword = '';
+    },
+
+    logout() {
+      this.isLoggedIn = false;
+      this.token = null;
+      localStorage.removeItem('token');
+      this.username = '';
+      this.showProfileModal = false;
+      this.showEditProfileModal = false;
+      this.$refs.toast.showToast('Logged out successfully', 'success');
+    },
+    toggleProfileModal() {
+      this.showProfileModal = !this.showProfileModal;
+    },
+
+    openEditProfile() {
+      this.showProfileModal = false;
+      this.showEditProfileModal = true;
+    },
+
+    closeEditProfile() {
+      this.showEditProfileModal = false;
+      this.showProfileModal = true;
+    },
+
+    async handleEditProfile() {
+      const formData = new FormData();
+      formData.append('new_username', this.newUsername);
+      formData.append('new_password', this.newPassword);
+
+      try {
+        await axios.put('http://localhost:8080/update-profile', formData, {
+          headers: {
+            'Authorization': `Bearer ${this.token}`,
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+
+        this.username = this.newUsername;
+        this.$refs.toast.showToast('Profile updated successfully', 'success');
+        this.closeEditProfile();
+      } catch (error) {
+        this.$refs.toast.showToast('Failed to update profile', 'error');
+      }
+    },
+    closeEditProfile() {
+      this.showEditProfileModal = false;
+      this.showProfileModal = true; 
+    },
+  }
 };
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Short+Stack&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Short+Stack&family=Walter+Turncoat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Noto+Sans+SC:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Short+Stack&family=Walter+Turncoat&display=swap');
+
+.center-container { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 30px;
+}
+
+.shops, .aboutUs {
+  font-size: 1.2rem;
+  color: rgb(32, 32, 61);
+  font-weight: 550;
+}
+
+.shops, .aboutUs:hover {
+  font-size: 1.2rem;
+  color: rgb(73, 73, 127);
+  font-weight: 550;
+}
+
+/* Common modal overlays */
+.edit-modal-overlay,
+.profile-modal-overlay,
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Specific styles for the About Us modal */
+.about-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 400px; 
+  max-width: 90%; 
+}
+
+.categories-modal-content {
+  background-color: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 1500px;
+  height: 90%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style> 
