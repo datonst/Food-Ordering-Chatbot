@@ -2,13 +2,13 @@ import sys
 sys.path.append('/Users/raiju/chatbot-TTNM/backend')
 """File containing root routes"""
 from fastapi.routing import APIRouter
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Form
 from fastapi import File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 # Định nghĩa oauth2_scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 from fastapi import status
@@ -23,6 +23,8 @@ import uuid
 import jwt
 from pathlib import Path
 from datetime import datetime, timedelta
+from jose import JWTError
+from typing import Optional
 
 
 # Schemas
@@ -45,15 +47,14 @@ from src.utils.security import hash_password, verify_password
 
 # Services
 from src.services import openai_service, functions
-from src.services.user_services import authenticate_user, create_access_token, SECRET_KEY, ALGORITHM, oauth2, ACCESS_TOKEN_EXPIRE_MINUTES
+from src.services.user_services import authenticate_user, create_access_token, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, get_user_by_token, verify_token
 
 # Data
 from sqlalchemy.orm import Session
-from src.data.data_utils import get_db, get_user_by_username
+from src.data.data_utils import get_db
 from sqlalchemy.orm import Session
 
-from src.services.user_services import register_user, login_user, update_user_profile
-from src.data.data_utils import get_db
+from src.data.data_utils import get_db, create_user
 
 def create_router(handler: MainHandler, CONFIG):
     router = APIRouter()
@@ -180,10 +181,10 @@ def create_router(handler: MainHandler, CONFIG):
         foods = db.query(Foods).filter(Foods.restaurant_id == restaurant_id).all()
         return foods
 
-    """@router.post("/Login", response_model=None)
+    @router.post("/login", response_model=None)
     async def login_for_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
-        db: Session = Depends(get_db),  # Sửa đúng cú pháp và đảm bảo import chính xác
+        db: Session = Depends(get_db),  
     ) -> Token:
         user = authenticate_user(db, form_data.username, form_data.password)
         if not user:
@@ -196,46 +197,105 @@ def create_router(handler: MainHandler, CONFIG):
         access_token = create_access_token(
             data={"sub": user.username}, expires_delta=access_token_expires
         )
-        return Token(access_token=access_token, token_type="bearer")"""
+        return Token(access_token=access_token, token_type="bearer")
+    @router.post("/register")
+    async def register(
+        username: str = Form(...),
+        fullname: str = Form(...),
+        email: str = Form(...),
+        password: str = Form(...),
+        db: Session = Depends(get_db)
+    ):
+        # Kiểm tra xem username đã tồn tại chưa
+        existing_username = db.query(Users).filter(Users.username == username).first()
+        if existing_username:
+            raise HTTPException(
+                status_code=400,
+                detail="Username already exists."
+            )
+
+        # Kiểm tra xem email đã tồn tại chưa
+        existing_useremail = db.query(Users).filter(Users.email == email).first()
+        if existing_useremail:
+            raise HTTPException(
+                status_code=400,
+                detail="Email already exists."
+            )
+
+        # Tạo người dùng mới
+        create_user(db, username=username, fullname=fullname, email=email, password=password)
+
+        return {
+            "message": "User registered successfully.",
+            "user": {
+                "username": username,
+                "email": email
+            }
+        }
     
-    @router.post("/login") 
-    async def login(login_form: OAuth2PasswordRequestForm = Depends(),
-        db: Session = Depends(get_db)):
-        user = authenticate_user(get_db, login_form.username, login_form.password)
+
+    # def get_user_by_token(db: Session, token: str) -> Optional[Users]:
+    #     credentials_exception = HTTPException(
+    #         status_code=401,
+    #         detail="Could not validate credentials",
+    #         headers={"WWW-Authenticate": "Bearer"},
+    #     )
+    
+    # # Giải mã token và lấy username
+    #     username = verify_token(token, credentials_exception)
+        
+    #     # Truy vấn người dùng từ DB theo username
+    #     user = db.query(Users).filter(Users.username == username).first()
+        
+    #     # Kiểm tra xem người dùng có tồn tại không
+    #     if user is None:
+    #         raise credentials_exception
+    #     return user
+    
+    # def verify_token(token: str, credentials_exception):
+    #     try:
+    #         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    #         username: str = payload.get("sub")
+    #         if username is None:
+    #             raise credentials_exception
+    #         return username
+    #     except JWTError:
+    #         raise credentials_exception
+    
+
+    @router.post("/updateProfile")
+    async def update_profile(
+        token: str = Depends(oauth2_scheme),
+        username: str = Form(None),
+        email: str = Form(None),
+        password: str = Form(None),
+        db: Session = Depends(get_db)
+    ):
+        if not any([username, email, password]):
+            raise HTTPException(
+                status_code=400,
+                detail="At least one field (username, email, or password) must be updated"
+            )
+        user = get_user_by_token(db, token)
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
-                headers={"WWW-Authenticate": "Bearer"},
+                status_code=404,
+                detail="User not found"
             )
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": user.username}, expires_delta=access_token_expires
-        )
-        return Token(access_token=access_token, token_type="bearer")
+        if username:
+            user.username = username
+        if email:
+            existing_email = db.query(Users).filter(Users.email == email).first()
+            if existing_email:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Email already exists"
+                )
+            user.email = email
+        if password:
+            # Hàm hash_password phải là một hàm để mã hóa mật khẩu
+            user.password = password
+        db.commit()
+        return {"message": "Profile updated successfully", "user": {"username": user.username, "email": user.email}}
     
-    @router.post("/register")
-    async def register(user_data: Register, db: Session = Depends(get_db)):
-        try:
-            user = register_user(db, user_data)
-            return {"msg": "User registered successfully", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-
-    @router.post("/login")
-    async def login(login_data: Login, db: Session = Depends(get_db)):
-        try:
-            user = login_user(db, login_data)
-            return {"msg": "Login successful", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-
-    @router.put("/update-profile")
-    async def update_profile(user_id: int, update_data: UpdateProfile, db: Session = Depends(get_db)):
-        try:
-            user = update_user_profile(db, user_id, update_data)
-            return {"msg": "User profile updated", "user": user}
-        except ValueError as e:
-            raise HTTPException(status_code=404, detail=str(e))
-
     return router

@@ -39,7 +39,7 @@ def main():
     print(food_df)
 
     users = get_Users(db)
-    user_data = [{"id": u.id, "username": u.username, "email": u.email, "hashed_password": u.hashed_password} for u in users]
+    user_data = [{"username": u.username, "fullname": u.fullname, "email": u.email, "password": u.password} for u in users]
     user_df = pd.DataFrame(user_data)
 
     print("\nUsers")

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 
 try:
     from database import Base
-    from sqlalchemy import Boolean, Column, Integer, String  # hoặc các kiểu dữ liệu cần thiết khác
+    from sqlalchemy import Column, Integer, String  # hoặc các kiểu dữ liệu cần thiết khác
 except:
     from .database import Base
 
@@ -23,10 +23,11 @@ class Foods(Base):
     description = Column(String, index=True)
     image = Column(String, index=True)
     price = Column(Integer, index=True)
+
 class Users(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    fullname = Column(String, nullable = False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    password = Column(String, nullable=False)
