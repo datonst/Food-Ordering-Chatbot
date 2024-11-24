@@ -1,8 +1,9 @@
+/* Shopping Cart */
 .shopping-cart {
     position: relative;
     cursor: pointer;
     padding: 2px;
-    border-radius:15%;
+    border-radius: 15%;
     margin-right: 10px;
 }
 
@@ -11,20 +12,18 @@
     border-radius: 25%;
     height: 3vh;
     width: 3vh;
-    margin-left: 1.6vh;
     margin-right: 1.6vh;
 }
 
 .shopping-cart:hover {
-    background: rgba(0,0,0,0.15);
+    background: rgba(212, 163, 115, 0.15); /* Light hover effect using accent color */
 }
-  
 
 .cart-item-count {
     position: relative;
     top: 6px;
     right: -12px;
-    background-color: rgba(201,39,93,255);
+    background-color: #8ca4ba; /* Accent color */
     color: white;
     border-radius: 50%;
     width: 15px;
@@ -35,25 +34,27 @@
     align-items: center;
 }
 
+/* Shopping Cart Container */
 .shopping-cart-container {
     position: fixed;
     top: 3vh; 
     right: 4vw;
     z-index: 9999;
     width: 30vw;
-    background-color: #fff;
+    background-color: #b5c1cd; /* Main background color */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     padding: 16px;
     animation: fadeInSlideUp 0.3s ease forwards;
-    max-height:40vh;
+    max-height: 100vh;
 }
 
+/* Close Button */
 .close-btn {
     position: absolute;
     top: 4px;
     right: 4px;
-    background: linear-gradient(to top right, rgba(188,0,0,255), rgba(201,39,93,255));
+    background: gray;/* Color gradient */
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -66,51 +67,52 @@
 }
 
 .close-btn:hover {
-    background: rgba(188,0,0,0.75);
+    background: rgb(96, 91, 91);
 }
 
+/* Order Button */
 .order-btn {
-    background: linear-gradient(to top right, rgba(188,0,0,255), rgba(201,39,93,255));
+    background: linear-gradient(to top right, #a1bed8, #8ca4ba); /* Color gradient */
     color: #fff;
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 16px;
 }
 
-.order-btn:hover{
-    background: rgba(188,0,0,0.75);
+.order-btn:hover {
+    background: rgba(212, 163, 115, 0.75); /* Darker shade on hover */
 }
 
+/* Total Price Container */
 .total-price-container {
     font-weight: bold;
     font-size: 18px;
-    margin-top: 16px;
-  }
-
-
-.shopping-cart-header {
-    background: white;
+    color:#59738c; /* Accent color */
 }
 
-.shopping-cart-body{
+
+/* Cart Body */
+.shopping-cart-body {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 20vh;
+    max-height: 150vh;
+    background: #b5c1cd; /* Main background color */
 }
 
+/* Cart Footer */
 .shopping-cart-footer {
     display: flex;
-    background: white;
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
     font-size: 18px;
-    margin-top: 16px;
+    color: #8ca4ba; /* Accent color */
+    margin-top: 30px;
+    background: #b5c1cd;
 }
 
-  
+/* Fade Away Animation */
 .fade-away {
     animation: fadeAway 0.5s forwards;
 }

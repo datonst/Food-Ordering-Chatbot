@@ -2,7 +2,7 @@
   <div v-if="restaurant" class="restaurant-full-view">
     <div class="sticky-top">
       <button class="go-back-btn" @click="goBack">Return</button>
-      <h2>{{ restaurant.name }}</h2>
+      <h2 class ="full_restaurants_name">{{ restaurant.name }}</h2>
       <img  @error="onImageError" :src="!(restaurant.image==null)? restaurant.image : 'restaurant.png'" class="restaurant-card-img-fullview rounded" alt="Restaurant Image" />
       <div class="description-container">
         <p>{{ restaurant.description }}</p>

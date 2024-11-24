@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700&family=Bebas+Neue&family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Noto+Sans+SC:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Short+Stack&family=Walter+Turncoat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Short+Stack&display=swap');
+
+/* Main Colors */
+:root {
+  --main-bg-color: #d0d0e4;
+  --secondary-bg-color: #a0b0c5;
+  --accent-color: #8ca4ba;
+  --highlight-color: #a5c6d1;
+}
+
+/* Restaurants Container */
 .restaurants-container {
   flex: 1; 
   margin-left: 5vh;
@@ -5,20 +17,26 @@
   padding-right: 10px;
   height: 80vh;
   overflow-y: auto;
-  overflow-x:hidden
+  overflow-x: hidden;
+  background-color: var(--main-bg-color);
 }
 
-.restaurants-container .row{
-  margin-right: 5vw!important;
+.restaurants-container .row {
+  margin-right: 5vw !important;
 }
 
+.restaurants-container .row_full {
+  margin-left: 2vh;
+  width: 130%;
+}
 
 .restaurant-card {
   padding: 0px;
-  margin-bottom: 5vh; 
+  margin-bottom: 5vh;
   animation: fadeInSlideUp 1.3s ease forwards;
 }
 
+/* Restaurant Card Item */
 .restaurant-card-item {
   height: auto;
   padding-bottom: 10px;
@@ -28,35 +46,40 @@
   animation: fadeInSlideUp 0.3s ease forwards;
   animation-delay: calc((var(--delay) + 1) * 0.1s);
   animation-fill-mode: both;
+  background-color: var(--secondary-bg-color);
 }
 
 .restaurant-card-item:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 
-
+/* Card Title */
 .restaurant-card-title {
-text-decoration: underline ;
-font-family: 'Roboto', sans-serif;
-font-style: italic;
-font-size: 14px; 
-font-weight: 500;
-margin-top:10%; 
-margin-left: 10%;
-margin-bottom: 0.5rem; 
+  text-decoration: underline;
+  font-family: 'Roboto', sans-serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 550;   
+  color: rgb(19, 19, 53);
+  margin-top: 10%;
+  margin-left: 10%;
+  margin-bottom: 0.5rem;
+  font-family: "Atma", system-ui;
 }
 
+/* Card Text */
 .restaurant-card-text {
-font-size: 12px; 
-margin-left: 10%;
-display: -webkit-box;
--webkit-line-clamp: 3;
--webkit-box-orient: vertical;  
-overflow: hidden;
-text-overflow: ellipsis;
+  font-size: 12px;
+  color: #1b212f;
+  margin-left: 10%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "Short Stack", cursive;
 }
-
 
 /* Full view restaurant */
 .restaurant-full-view {
@@ -64,18 +87,24 @@ text-overflow: ellipsis;
   position: relative;
   flex: 1;
   margin-top: 2vh;
-  margin-right: 35vw!important;
+  margin-right: 35vw !important;
   margin-left: 5vh;
   padding-left: 10px;
   padding-right: 10px;
+  background-color: var(--main-bg-color);
   animation: fadeInSlideUp 0.4s ease forwards;
+}
+
+.full_restaurants_name{
+  font-weight: 550;
+  font-family: "Short Stack", cursive;
 }
 
 .go-back-btn {
   position: absolute;
   top: 0;
   right: 0;
-  background: linear-gradient(to top right, rgba(188, 0, 0, 255), rgba(201, 39, 93, 255));
+  background: linear-gradient(to top right, var(--accent-color), var(--highlight-color));
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -84,54 +113,54 @@ text-overflow: ellipsis;
 }
 
 .go-back-btn:hover {
-  background: linear-gradient(to top right, rgba(201, 39, 93, 255), rgba(188, 0, 0, 255));
+  background: linear-gradient(to top right, var(--highlight-color), var(--accent-color));
 }
 
+/* Restaurant Card Image */
 .restaurant-card-img-top.rounded {
-  max-width: 150px; 
-  width:100%;
+  max-width: 150px;
+  width: 100%;
   object-fit: cover;
   border-radius: 10px;
   display: block;
-  margin: 0 auto; 
-  margin-top:5%;
+  margin: 0 auto;
+  margin-top: 5%;
   height: 150px;
-  width: 100%;
-  object-fit: cover;
 }
 
 .restaurant-card-img-fullview.rounded {
   width: 100%;
   max-width: 250px;
   height: auto;
-  width:auto;
   object-fit: cover;
   border-radius: 10px;
   display: block;
   margin: 0 auto;
-  height: 150px;
-  width:200px;
-  object-fit: cover;
+  width: 200px;
 }
 
+/* Description Container */
 .description-container {
-  background-color: #f5f5f5; 
-  border-radius: 10px; 
-  padding: 16px; 
-  margin-top: 16px; 
+  background-color: var(--secondary-bg-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
 .description-container p {
-  font-size: 16px; 
-  line-height: 1.5; 
-  margin: 0; 
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 0;
+  color: rgb(22, 22, 71);
+  font-family: "Short Stack", cursive;
 }
 
-/*  Food */
+/* Food List */
 .food-list {
-  max-height: 45vh; 
-  overflow-y: auto; 
-  margin-top: 16px; 
+  max-height: 45vh;
+  overflow-y: auto;
+  margin-top: 16px;
+  background-color: var(--main-bg-color);
 }
 
 .food-item {
@@ -141,8 +170,8 @@ text-overflow: ellipsis;
 }
 
 .food-img {
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   border-radius: 10px;
   margin-right: 16px;
@@ -153,28 +182,34 @@ text-overflow: ellipsis;
 }
 
 .food-description {
-  color: #555; 
+  color: #555;
+  font-family: "Short Stack", cursive;
 }
 
+/* Food Actions */
 .food-actions {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: flex-end;
   margin-right: 10px;
 }
 
-.add-to-cart-btn {
-  background: linear-gradient(to top right, rgba(188, 0, 0, 255), rgba(201, 39, 93, 255));
+/* Buttons */
+.add-to-cart-btn, .quantity-btn {
+  background: linear-gradient(to top right, var(--accent-color), var(--highlight-color));
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 8px;
-  margin-right:5px;
 }
 
-.add-to-cart-btn:hover {
-  background: linear-gradient(to top right, rgba(201, 39, 93, 255), rgba(188, 0, 0, 255));
+.add-to-cart-btn {
+  margin-top: 8px;
+  margin-right: 5px;
+}
+
+.add-to-cart-btn:hover, .quantity-btn:hover {
+  background: linear-gradient(to top right, var(--highlight-color), var(--accent-color));
 }
 
 .quantity-control {
@@ -183,12 +218,7 @@ text-overflow: ellipsis;
 }
 
 .quantity-btn {
-  background: linear-gradient(to top right, rgba(188, 0, 0, 255), rgba(201, 39, 93, 255));
-  color: #fff;
-  border: none;
   padding: 2px 4px;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 16px;
   font-weight: bold;
   width: 24px;
@@ -196,26 +226,28 @@ text-overflow: ellipsis;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left:3px;
+  margin-left: 3px;
 }
 
 .quantity-input {
   width: 34px;
   border: none;
   border-radius: 4px;
-  background-color: #f5f5f5;
+  background-color: var(--secondary-bg-color);
   color: #333;
   text-align: center;
   margin: 0 4px;
-  font-size:7;
 }
 
+/* Miscellaneous */
 .restaurant-name {
   font-size: 12px;
-  color: #555; 
+  font-weight: 450;
+  color: #555;
+  font-family: "Short Stack", cursive;
 }
 
 .show-more {
-  color: blue;
+  color: var(--highlight-color);
   cursor: pointer;
 }

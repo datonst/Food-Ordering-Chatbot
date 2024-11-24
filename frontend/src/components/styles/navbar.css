@@ -1,25 +1,46 @@
-.navbar {
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+
+/* Main Colors */
+:root {
+  --main-bg-color: #d0d0e4;
+  --secondary-bg-color: #a0b0c5;
+  --accent-color: #8ca4ba;
+  --highlight-color: #a5c6d1;
+  }
+  
+  /* Navbar Styling */
+  .navbar {
     display: flex;
     justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(255, 21, 21, 0.232), rgb(255,255,255));
-    position:relative;
-    max-height:20%;
-    border-bottom: 1px solid #e5e6ea;
-}
-
-.nav {
+    background: linear-gradient(to bottom, var(--highlight-color), var(--main-bg-color));
+    position: relative;
+    max-height: 15%; 
+    padding: 10px 20px; 
+    border-bottom: 1px solid var(--secondary-bg-color);
+  }
+  
+  .nav {
     background: transparent;
     border-bottom: none;
-}
+  }
+  
+  .navbar-logo {
+    height: 6vh; 
+    margin-left: 4vh;
+  }
+  
+  .navbar-title {
+    margin-top: 2vh; 
+    margin-left: 15px;
+    color: rgba(0, 0, 0, 0.6); 
+    font-family: "Permanent Marker", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
 
-.navbar-logo {
-    height: 5vh;
-    margin-left: 5vh;
-}
-
-.navbar-title{
-    margin-top: 1.5vh;
-    margin-left: 10px;
-    font-size: 2vh;
-    color:rgba(0, 0, 0, 0.5)
-}
+  .navbar-title.mb-0{
+    font-family: "Permanent Marker", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
