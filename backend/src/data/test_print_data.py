@@ -2,13 +2,16 @@ import pandas as pd
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
-from data_models import Restaurant, Foods
+from data_models import Restaurant, Foods, Users
 
 def get_restaurants(db: Session):
     return db.query(Restaurant).all()
 
 def get_foods(db: Session):
     return db.query(Foods).all()
+
+def get_Users(db: Session):
+    return db.query(Users).all()
 
 def main():
     db = SessionLocal()
@@ -34,6 +37,13 @@ def main():
     # Print the Foods DataFrame
     print("\nFoods:")
     print(food_df)
+
+    users = get_Users(db)
+    user_data = [{"username": u.username, "fullname": u.fullname, "email": u.email, "password": u.password} for u in users]
+    user_df = pd.DataFrame(user_data)
+
+    print("\nUsers")
+    print(user_df)
     breakpoint()
 
 if __name__ == "__main__":

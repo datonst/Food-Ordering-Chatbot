@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
-from data_models import Restaurant, Foods
+from data_models import Restaurant, Foods, Users
 
 def add_restaurant(db: Session, name: str, description: str, image: str):
     restaurant = Restaurant(name=name, description=description, image=image)
@@ -17,6 +17,22 @@ def add_food(db: Session, restaurant_id: int, name: str, description: str, image
     db.commit()
     db.refresh(food)
     return food
+
+def add_user(db: Session, id: int, username: str, fullname: str, email: str, password: str):
+    existing_user = db.query(Users).filter(Users.username == username).first()
+    if existing_user:
+        print(f"User with username {username} already exists.")
+        return existing_user 
+    existing_user = db.query(Users).filter(Users.email == email).first()
+    if existing_user:
+        print(f"User with email {email} already exists.")
+        return existing_user 
+    user = Users(id = id, username = username, fullname = fullname, email = email, password = password)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
 def main():
     db = SessionLocal()
 
@@ -302,6 +318,37 @@ def main():
         {"restaurant_id": 25, "name": "Milk", "description": "Cold milk", "image": "beverages/milk.png", "price": 2},
     ]
 
+    # Sample data for restaurants
+    users = [
+    {
+      "userid": "1",
+      "username": "john_doe",
+      "fullname": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "abc"
+    },
+    {
+      "userid": "2",
+      "username": "jane_smith",
+      "fullname": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "password": "abc"
+    },
+    {
+      "userid": "3",
+      "username": "alice_wonder",
+      "fullname": "Alice Wonder",
+      "email": "alice.wonder@example.com",
+      "password": "abc"
+    },
+    {
+      "userid": "4",
+      "username": "raiju",
+      "fullname": "Alexander Pall",
+      "email": "raiju@example.com",
+      "password": "abc"
+    }
+    ]
     # Populate restaurants table
     for restaurant in restaurants:
         add_restaurant(db, restaurant["name"], restaurant["description"], restaurant["image"])
@@ -309,8 +356,8 @@ def main():
     # Populate foods table
     for food in foods:
         add_food(db, food["restaurant_id"], food["name"], food["description"], food["image"], food["price"])
-
-    print("Data populated successfully!")
-
+    
+    for user in users:
+        add_user(db, user["userid"], user["username"], user["fullname"], user["email"], user["password"])
 if __name__ == "__main__":
     main()
