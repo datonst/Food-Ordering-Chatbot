@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
 # Extend the system path for imports if necessary
-sys.path.append('/Users/raiju/chatbot-TTNM/backend')
+import dotenv
+import os
+dotenv.load_dotenv()
+your_path = os.getenv("YOUR_PATH")
+sys.path.append(f'{your_path}/chatbot-TTNM/backend')
+
 
 from src.schemas.base_models import Login, Register, UpdateProfile
 from src.services.user_services import register_user, login_user, update_user_profile
