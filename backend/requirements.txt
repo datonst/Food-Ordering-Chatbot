@@ -21,7 +21,7 @@ sqlalchemy
 databases
 sqlite-utils
 pinecone-client>=5.0.1,<6.0.0
-langchain>=0.0.312,<0.0.313
+# langchain>=0.0.312,<0.0.313
 nltk>=3.8.1,<4.0.0
 PyMuPDF>=1.23.22,<2.0.0
 llama-index-vector-stores-pinecone==0.2.1
@@ -41,3 +41,6 @@ jupyterlab>=3.5.3,<4.0.0
 passlib==1.7.4
 bcrypt==4.2.1
 python-jose == 3.3.0
+autogen==0.3.0
+langchain-community==0.3.8
+langchain-openai==0.2.9
