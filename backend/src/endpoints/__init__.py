@@ -6,9 +6,10 @@ def include_all_routers(app: FastAPI, handler, CONFIG) -> FastAPI:
     """
     Add all routers to the FastAPI app
     """
-    app.include_router(health_check.router)
+    prefix = "/api"
+    app.include_router(health_check.router, prefix=prefix)
 
     router = routers.create_router(handler, CONFIG)
-    app.include_router(router)
+    app.include_router(router, prefix=prefix)
 
     return app

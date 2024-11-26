@@ -1,7 +1,3 @@
-import sys
-sys.path.append('/Users/raiju/chatbot-TTNM/backend')
-
-
 
 import uvicorn
 from fastapi import FastAPI

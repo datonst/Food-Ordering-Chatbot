@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/Users/raiju/chatbot-TTNM/backend')
 import pandas as pd
 from src.utils.security import hash_password
 from sqlalchemy.orm import Session

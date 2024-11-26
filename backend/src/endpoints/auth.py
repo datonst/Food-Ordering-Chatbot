@@ -32,6 +32,7 @@ async def login(login_data: Login, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 @router.put("/update-profile")
 async def update_profile(user_id: int, update_data: UpdateProfile, db: Session = Depends(get_db)):
     try:

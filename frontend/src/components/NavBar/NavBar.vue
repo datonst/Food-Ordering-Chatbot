@@ -16,6 +16,7 @@
     </div>
 
     <div class="right-container">
+      <img class="order-status" src="@/assets/orderStatus.png" alt="Status"/>
       <!-- 로그인한 상태에서는 유저의 이름과 로그아웃 버튼을 표시 -->
       <div v-if="isLoggedIn" class="user-info">
         <span class="username">{{ username }}</span>
@@ -117,7 +118,7 @@
       <div class="auth-form modal-content">
         <img class="close-btn" src="@/assets/close-button.png" @click="toggleLogin"/>
         <h3>{{showSignup ? 'Sign Up' : 'Login'}}</h3>
-        <form @submit.prevent="showSignup ? handleSignup : handleLogin">
+        <form @submit.prevent="handleAuthSubmit">
           <input 
             v-if="showSignup" 
             type="text" 
@@ -151,8 +152,11 @@
             v-model="confirmPassword" 
             required
           />
-          <button type="submit">{{showSignup ? 'Sign up' : 'Login'}}</button>
+          <button type="submit">
+            {{ showSignup ? 'Sign up' : 'Login' }}
+          </button>
         </form>
+        
         <button class="toggle-btn" @click="toggleSignup">
           {{ showSignup ? "Already have an account? Login" : "Don't have an account? Sign Up" }}
         </button>
@@ -179,6 +183,8 @@
         <form @submit.prevent="handleEditProfile" class="handleEditProfile">
           <p class="newUsername">New Username</p>
           <input type="text" placeholder="New Username" v-model="newUsername" required/>
+          <p class="newEmail">New Email</p>
+          <input type="email" placeholder="New Email" v-model="newEmail" required/>
           <p class="newPassword">New Password</p>
           <input type="password" placeholder="New Password" v-model="newPassword" required/>
           <div class="saveOrCancle-btn">
@@ -240,10 +246,19 @@ export default {
     if (token) {
       this.token = token;
       this.isLoggedIn = true;
-      this.fetchUserProfile();
+      this.username = localStorage.getItem('username');
     }
   },
   methods: {
+    handleAuthSubmit(event) {
+    event.preventDefault();
+    if (this.showSignup) {
+      this.handleSignup(event);
+    } else {
+      this.handleLogin(event);
+    }
+    },
+
     toggleAuthMode() {
       // 모드 전환 전에 이전 이벤트 리스너 제거
       this.removeAuthEventListeners();
@@ -251,12 +266,13 @@ export default {
       this.resetForm();
       
       if (this.$refs.toast) {
-        this.$refs.toast.clearToast();
+        //this.$refs.toast.clearToast();
       }
     },
     removeAuthEventListeners() {
       const form = document.querySelector('.auth-form form');
       if (form) {
+        console.log('Removing event listeners');
         form.removeEventListener('submit', this.handleLogin);
         form.removeEventListener('submit', this.handleSignup);
       }
@@ -265,11 +281,13 @@ export default {
     toggleLogin() {
       this.showLogin = !this.showLogin;
       this.showSignup = false;
+      this.resetForm();
     },
 
     toggleSignup() {
       this.showSignup = !this.showSignup;
       this.showLogin = true;
+      this.resetForm();
     },
 
     toggleAboutUs() {
@@ -281,78 +299,88 @@ export default {
 
     async handleSignup(event) {
       event.preventDefault();
+      console.log('Signup process started'); 
       
+      if (!this.username || !this.fullName || !this.email || !this.password) {
+        this.$refs.toast.showToast('All fields are required', 'error');
+        return;
+      }
+
       if (this.password !== this.confirmPassword) {
         this.$refs.toast.showToast('Passwords do not match', 'error');
         return;
       }
 
       const formData = new FormData();
-      formData.append('username', this.username);
-      formData.append('email', this.email);
-      formData.append('fullname', this.fullName);
-      formData.append('password', this.password);
+        formData.append('username', this.username);
+        formData.append('email', this.email);
+        formData.append('fullname', this.fullName);
+        formData.append('password', this.password);
 
       try {
-        await axios.post('http://localhost:8080/register', formData, {
+        console.log("-------------------------------------- start")
+        await axios.post('http://localhost:8080/api/register', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+        console.log("-------------------------------------- end")
 
-        this.$refs.toast.showToast('Account created successfully! Please log in.', 'success');
+        console.log('Signup response:', response.data); 
+
+        const { access_token, token_type } = response.data;
+        this.token = access_token || response.data.token; 
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('username', this.username);
+        
+        this.isLoggedIn = true;
+        //await this.fetchUserProfile();
+        
+        this.$refs.toast.showToast('Account created and logged in successfully!', 'success');
+        this.showLogin = false;
         this.showSignup = false;
-        this.showLogin = true;
         this.resetForm();
       } catch (error) {
-        this.$refs.toast.showToast(error.response?.data?.detail || 'Registration failed', 'error');
+          console.error('Signup error:', error.response?.data);
+          const errorMessage = error.response?.data?.detail || 'Registration failed';
+          this.$refs.toast.showToast(errorMessage, 'error');
       }
     },
 
     async handleLogin(event) {
       event.preventDefault();
+      console.log('Login process started'); 
 
       const formData = new FormData();
       formData.append('username', this.username);
       formData.append('password', this.password);
 
       try {
-        const response = await axios.post('http://localhost:8080/login', formData, {
+        const response = await axios.post('http://localhost:8080/api/login', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
 
-        const { access_token } = response.data;
+        console.log('Login response:', response.data);
+
+        const { access_token, token_type } = response.data;
         this.token = access_token;
         localStorage.setItem('token', access_token);
         
         this.isLoggedIn = true;
-        await this.fetchUserProfile();
+        this.username = this.username;
         
         this.$refs.toast.showToast(`Welcome back, ${this.username}!`, 'success');
         this.showLogin = false;
         this.resetForm();
       } catch (error) {
-        this.$refs.toast.showToast('Invalid username or password', 'error');
+        console.error('Login error:', error);
+        const errorMessage = error.response?.data?.detail || 'Invalid username or password';
+        this.$refs.toast.showToast(errorMessage, 'error');
       }
     },
 
-    async fetchUserProfile() {
-      try {
-        const response = await axios.get('http://localhost:8080/profile', {
-          headers: {
-            'Authorization': `Bearer ${this.token}`
-          }
-        });
-        const userData = response.data;
-        this.username = userData.username;
-        this.email = userData.email;
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-        this.logout();
-      }
-    },
     resetForm() {
       this.username = '';
       this.password = '';
@@ -386,22 +414,41 @@ export default {
 
     async handleEditProfile() {
       const formData = new FormData();
-      formData.append('new_username', this.newUsername);
-      formData.append('new_password', this.newPassword);
+      if (this.newUsername) formData.append('username', this.newUsername);
+      if (this.newEmail) formData.append('email', this.newEmail);
+      if (this.newPassword) formData.append('password', this.newPassword);
 
       try {
-        await axios.put('http://localhost:8080/update-profile', formData, {
+        await axios.put('http://localhost:8080/api/updateProfile', formData, {
           headers: {
             'Authorization': `Bearer ${this.token}`,
             'Content-Type': 'multipart/form-data',
           }
         });
 
-        this.username = this.newUsername;
+        if (this.newUsername) {
+          this.username = this.newUsername;
+          localStorage.setItem('username', this.newUsername);
+        }
+        if (this.newEmail) {
+          this.email = this.newEmail;
+          localStorage.setItem('email', this.newEmail);
+        }
+        if (this.newPassword) {
+          this.password = this.newPassword;
+          localStorage.setItem('password', this.newPasswird);
+        }
+
+
         this.$refs.toast.showToast('Profile updated successfully', 'success');
         this.closeEditProfile();
+        this.newUsername = '';
+        this.newPassword = '';
+        this.newEmail = '';
       } catch (error) {
-        this.$refs.toast.showToast('Failed to update profile', 'error');
+        console.error('Profile update error:', error.response?.data);
+        const errorMessage = error.response?.data?.detail || 'Failed to update profile';
+        this.$refs.toast.showToast(errorMessage, 'error');
       }
     },
     closeEditProfile() {
@@ -434,6 +481,11 @@ export default {
   font-size: 1.2rem;
   color: rgb(73, 73, 127);
   font-weight: 550;
+}
+
+.order-status {
+  height: 23px;
+  width: 23px;
 }
 
 /* Common modal overlays */
