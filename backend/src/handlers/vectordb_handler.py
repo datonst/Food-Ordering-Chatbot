@@ -21,7 +21,7 @@ class VectorDBHandler():
         self,
     ):
         pass
-    
+
     def prepare_response(self, response):
         """Formats the response from the system"""
         fit_responses = []

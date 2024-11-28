@@ -254,11 +254,11 @@
           }
         )
         .then(response => {
-          console.log(response)
+          
           let responseObject = response.data
           let answer = responseObject.response
           let functionCallSignal = responseObject.function_call
-
+          console.log(functionCallSignal)
           // If we don't have to function call it will return the answer
           if (functionCallSignal == false || functionCallSignal == null) {
             this.botTypingMsg = null
@@ -361,7 +361,7 @@
             console.log(functionCallResponseContent);
 
             resolve({
-              role: "model",
+              role: "assistant",
               content: functionCallResponseContent,
               name: functionCallSignal.name,
             });

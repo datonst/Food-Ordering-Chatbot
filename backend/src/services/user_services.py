@@ -1,9 +1,5 @@
 import dotenv
-import os,sys
 dotenv.load_dotenv()
-your_path = os.getenv("YOUR_PATH")
-sys.path.append(f'{your_path}/chatbot-TTNM/backend')
-
 
 import jwt
 from jose import JWTError

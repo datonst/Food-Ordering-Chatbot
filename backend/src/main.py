@@ -2,12 +2,9 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
-import sys
 import dotenv
 dotenv.load_dotenv()
-your_path = os.getenv("YOUR_PATH")
-sys.path.append(f'{your_path}/chatbot-TTNM/backend')
+
 
 from src.config import CONFIG
 from src.endpoints import include_all_routers
@@ -22,7 +19,7 @@ data_models.Base.metadata.create_all(bind=engine)
 
 
 
-print(f'Your path: {your_path}')
+
 class Application:
     @classmethod
     def setup(cls, app: FastAPI, handler: MainHandler, CONFIG):

@@ -1,38 +1,31 @@
 from tenacity import retry, wait_random, stop_after_attempt
-import dotenv
-import os
-
+import pickle
 @retry(wait=wait_random(min=1, max=5), stop=stop_after_attempt(5))
 async def chat_completion(messages, CONFIG, functions=[], client=None):
     """Receives the chatlog from the user and answers"""
 
     # Initializing the openai configuration
-    CFG_GEMINI = CONFIG["gemini"]
+    CFG_OPENAI = CONFIG["openai"]
 
     model_args = {
-        "temperature": 0.0,
+        "model": CFG_OPENAI.get("chat_model", "gpt-4o-mini"),
+        "temperature": CFG_OPENAI.get("temperature", 0),
+        "max_tokens": CFG_OPENAI.get("max_tokens", 512),
         "top_p": 1,
         "frequency_penalty": 0,
         "presence_penalty": 0,
+        "messages": messages
     }
-    print(CFG_GEMINI["api_key"])
-    client.configure(api_key=CFG_GEMINI["api_key"])
-    model = client.GenerativeModel(
-        'gemini-1.5-flash-8b',
-        tools = functions,
-        generation_config=client.GenerationConfig(**model_args),
-    )
-    # print(messages)
-    chat = model.start_chat(enable_automatic_function_calling=True, history = messages[:-1])
-    response = chat.send_message(messages[-1]["parts"])
-    # response = model.generate_content(tools = functions,contents=messages)
-    print(response)
-    return response
+
     # Incrementing in cases of function calling
-    # if len(functions) > 0:
-    #     model_args["functions"] = functions
-    #     model_args["function_call"] = "auto"
+    if len(functions) > 0:
+        model_args["tools"] = functions
 
-    # response = client.chat.completions.create(**model_args)
+    # response = "client.chat.completions.create(**model_args)"
+    # print(functions)
 
+    response = client.chat.completions.create(**model_args)
+    # with open('data.pkl', 'rb') as f:
+    #     response =  pickle.load(f)
     # Returning raw response
+    return response
