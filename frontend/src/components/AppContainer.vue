@@ -1,5 +1,9 @@
 <template>
-  <nav-bar :shopping-cart="shoppingCart" @open-cart="openCart"></nav-bar>
+ <nav-bar 
+    :shopping-cart="shoppingCart" 
+    @open-cart="openCart"
+    :order-timestamps="orderTimestamps"
+  ></nav-bar>
   <shopping-cart
     v-if="isCartOpen"
     ref="shoppingCart"
@@ -8,8 +12,11 @@
     @clear-shopping-cart="clearCart"
     @remove-from-cart="removeFromCart"
     @registerAction="registerAction"
+    @order-submit="handleOrderSubmit"
   >
   </shopping-cart>
+
+  <Toast ref="toast" />
 
   <div >
     <div class="row justify-content-center">
@@ -47,6 +54,7 @@
 </template>
 
   <script>
+  import Toast from "./NavBar/Toast.vue"
   import NavBar from "./NavBar/NavBar.vue"
   import ShoppingCart from "./ShoppingCart/ShoppingCart.vue"
   import ChatContainer from "./Chatbot/ChatContainer.vue";
@@ -61,7 +69,8 @@
       NavBar,
       ShoppingCart,
       ChatContainer,
-      RestaurantsContainer
+      RestaurantsContainer,
+      Toast
     },
     data() {
       return {
@@ -72,6 +81,14 @@
         baseApiUrl: import.meta.env.VITE_APP_API_URL + "/api/",
         baseChatApiUrl: import.meta.env.VITE_APP_API_URL + "/api/chat",
         handsFreeFlag: false,
+
+        orderTimestamps: {
+          orderAccepted: null,
+          cookingStarted: null,
+          deliveryStarted: null,
+          orderArrived: null
+        },
+        orderProcessInterval: null,
 
         // Chatbot
         isChatOpen: false,
@@ -176,6 +193,46 @@
         }, 200); // Remove the item after the animation duration
 
         
+      },
+      handleOrderSubmit() {
+        const now = new Date();
+        
+        // 기존의 setTimeout 로직을 clearInterval로 관리되는 로직으로 변경
+        this.orderProcessInterval = setInterval(() => {
+          const elapsedTime = (new Date() - now) / 1000; // 초 단위
+
+          if (elapsedTime >= 3 && !this.orderTimestamps.orderAccepted) {
+            this.updateOrderStatus('orderAccepted', 'Order accepted at the store.');
+          }
+          
+          if (elapsedTime >= 6 && !this.orderTimestamps.cookingStarted) {
+            this.updateOrderStatus('cookingStarted', 'Cooking started at the store.');
+          }
+          
+          if (elapsedTime >= 60 && !this.orderTimestamps.deliveryStarted) {
+            this.updateOrderStatus('deliveryStarted', 'Delivery started.');
+          }
+          
+          if (elapsedTime >= 90 && !this.orderTimestamps.orderArrived) {
+            this.updateOrderStatus('orderArrived', 'Order has arrived!');
+            clearInterval(this.orderProcessInterval);
+          }
+        }, 1000); // 1초마다 체크
+      },
+      updateOrderStatus(timestampKey, toastMessage) {
+        const now = new Date();
+        this.orderTimestamps[timestampKey] = now;
+        
+        // Toast 알림
+        if (this.$refs.toast) {
+          this.$refs.toast.showToast(toastMessage, 'info');
+        }
+      },
+      beforeDestroy() {
+        // 컴포넌트 제거 시 인터벌 정리
+        if (this.orderProcessInterval) {
+          clearInterval(this.orderProcessInterval);
+        }
       },
 
       // -- Messages management --
