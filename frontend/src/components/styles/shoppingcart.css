@@ -23,7 +23,7 @@
     position: relative;
     top: 6px;
     right: -12px;
-    background-color: #8ca4ba; /* Accent color */
+    background-color: #e8b152; /* Accent color */
     color: white;
     border-radius: 50%;
     width: 15px;
@@ -41,7 +41,7 @@
     right: 4vw;
     z-index: 9999;
     width: 30vw;
-    background-color: #b5c1cd; /* Main background color */
+    background-color: rgb(246, 244, 244); /* Main background color */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     padding: 16px;
@@ -72,7 +72,7 @@
 
 /* Order Button */
 .order-btn {
-    background: linear-gradient(to top right, #a1bed8, #8ca4ba); /* Color gradient */
+    background: linear-gradient(to top right, rgb(230, 209, 176), #e8b152); /* Color gradient */
     color: #fff;
     border: none;
     padding: 8px 16px;
@@ -88,7 +88,7 @@
 .total-price-container {
     font-weight: bold;
     font-size: 18px;
-    color:#59738c; /* Accent color */
+    color:rgb(112, 112, 112); /* Accent color */
 }
 
 
@@ -97,7 +97,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 150vh;
-    background: #b5c1cd; /* Main background color */
+    background: rgb(246, 244, 244); /* Main background color */
 }
 
 /* Cart Footer */
@@ -107,9 +107,9 @@
     align-items: center;
     font-weight: bold;
     font-size: 18px;
-    color: #8ca4ba; /* Accent color */
+    color: #e8b152; /* Accent color */
     margin-top: 30px;
-    background: #b5c1cd;
+    background: rgb(246, 244, 244);
 }
 
 /* Fade Away Animation */
