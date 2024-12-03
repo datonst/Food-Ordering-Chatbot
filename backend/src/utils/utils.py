@@ -6,12 +6,11 @@ from llama_index.embeddings.gemini import GeminiEmbedding
 from llama_index.core import Settings
 def load_pinecone_index(index_name, CONFIG):
     """Loads the pinecone index from the index_name"""
-    # model_name = "models/text-embedding-004"
-    # CFG_GEMINI = CONFIG["gemini"]
-    # GOOGLE_API_KEY=CFG_GEMINI["api_key"]
-    # embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
-    # # llm = OpenAI(model="gpt-4")
-    # Settings.embed_model = embed_model
+    model_name = "models/text-embedding-004"
+    CFG_GEMINI = CONFIG["gemini"]
+    GOOGLE_API_KEY=CFG_GEMINI["api_key"]
+    embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
+    Settings.embed_model = embed_model
     vector_store = PineconeVectorStore(
         index_name=index_name,
         environment=CONFIG["pinecone"]["environment"],

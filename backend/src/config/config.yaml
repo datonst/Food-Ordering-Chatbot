@@ -4,7 +4,7 @@ openai:
   temperature: 0.0
   max_tokens: 256
   model_transcript: "whisper-1"
-  model_transcript_language: "en"
+  model_transcript_language: "vi"
   embedding_model: "text-embedding-3-small"
   model_tts: "tts-1"
   voice_tts: "shimmer"

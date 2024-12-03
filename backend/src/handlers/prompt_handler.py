@@ -69,11 +69,13 @@ class PromptHandler():
   
         print("-----------------------------------")
         content = response.choices[0].message.content
-        if content is None:
+        print(response)
+        try: 
             function_call = response.choices[0].message.tool_calls[0].function
-            print(function_call)
-        else:
-            function_call = False
+            if function_call is None:
+                function_call = False    
+        except Exception as e:
+            function_call = False        
         return {
             "response": content,
             "function_call": function_call,

@@ -2,16 +2,19 @@
 import os
 import dotenv
 dotenv.load_dotenv(dotenv_path="../.env")
+
 # Data handlers
 import pandas as pd
+from sqlalchemy.orm import Session
 
 # Utils
 try:
-    from data_utils import get_restaurants, get_foods
-
+    from data_utils import get_db, get_restaurants, get_foods
+    from data_models import Restaurant, Foods
     from database import SessionLocal
 except:
-    from .data_utils import  get_restaurants, get_foods
+    from .data_utils import get_db, get_restaurants, get_foods
+    from .data_models import Restaurant, Foods
     from .database import SessionLocal
 
 # Llamaindex
@@ -25,14 +28,13 @@ from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.core.vector_stores import ExactMatchFilter
 from llama_index.core import Settings
 import google.generativeai as genai
-from llama_index.embeddings.openai import OpenAIEmbedding
 # VDBs
 #import weaviate
 import pinecone
 ENVIRONMENT = "gcp-starter"
 INDEX_NAME = "auto-food-order"
-# GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+
 def process_restaurants():
     # Reading SQLite db
     db = SessionLocal()
@@ -91,10 +93,11 @@ def process_restaurants():
     storage_context = StorageContext.from_defaults(
         vector_store=vector_store,
     )
-    model_name = "text-embedding-3-small"
-    embed_model = OpenAIEmbedding(model_name=model_name, api_key=OPENAI_API_KEY)
+    model_name = "models/text-embedding-004"
+    embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
+    # llm = OpenAI(model="gpt-4")
     Settings.embed_model = embed_model
-    
+    print(documents)
     index = VectorStoreIndex.from_documents(
         documents=documents,
         storage_context=storage_context,
@@ -104,6 +107,10 @@ def process_restaurants():
     return index
 
 def load_index():
+    model_name = "models/text-embedding-004"
+    embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
+    # llm = OpenAI(model="gpt-4")
+    Settings.embed_model = embed_model
     vector_store = PineconeVectorStore(
         index_name=INDEX_NAME,
         environment=ENVIRONMENT,
@@ -140,7 +147,7 @@ def main():
         "hybrid_retriever": [],
         "hsnw": [],
     }
-    query = "testing, I would like to order a large pizza with mango, thai food, taco fiesta"
+    query = "cho tôi nhà hàng sushi"
     model= genai.GenerativeModel(
             'gemini-1.5-flash-8b',
             # tools = functions,

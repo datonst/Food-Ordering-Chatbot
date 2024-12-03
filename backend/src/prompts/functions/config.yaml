@@ -118,3 +118,10 @@ functions:
       type: object
       properties: {}
     allow: true
+    
+  - name: track_order
+    description: This function tracks the order of the user. It should be called if the user wants to know the status of their order
+    parameters:
+      type: object
+      properties: {}
+    allow: true
