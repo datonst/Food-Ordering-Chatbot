@@ -62,7 +62,12 @@ def main():
             {"name": "Ramen House", "description": "Japanese ramen and noodle dishes", "image": "restaurants/ramen_house.png"},
             {"name": "Ice Cream Shop", "description": "Variety of ice cream flavors and desserts", "image": "restaurants/ice_cream_shop.png"},
             {"name": "Sandwich Shop", "description": "Freshly made sandwiches and wraps", "image": "restaurants/sandwich_shop.png"},
-            {"name": "Pancake House", "description": "Sweet and savory pancakes", "image": "restaurants/pancake_house.png"}
+            {"name": "Pancake House", "description": "Sweet and savory pancakes", "image": "restaurants/pancake_house.png"},
+            {"name": "Nhà hàng ngon", "description": "Chuyên các món Việt truyền thống với không gian ấm cúng, phù hợp gia đình và khách du lịch", "image": "restaurants/pancake_house.png"},
+            {"name": "Cơm Tấm Mộc", "description": "Chuyên cơm tấm sườn nướng thơm ngon, chuẩn vị miền Nam", "image": "restaurants/pancake_house.png"},
+            {"name": "Quán Bún Bò Huế O Xuân", "description": "Bún bò Huế đậm đà hương vị miền Trung", "image": "restaurants/pancake_house.png"},
+            {"name": "Nhà hàng Phố Biển", "description": "Hải sản tươi sống chế biến hấp dẫn, đậm vị biển cả", "image": "restaurants/pancake_house.png"},
+            {"name": "Nhà hàng Hội An", "description": "Đặc sản miền Trung, mang phong cách phố cổ", "image": "restaurants/pancake_house.png"},
         ]
 
     # Sample data for foods
@@ -316,8 +321,58 @@ def main():
         {"restaurant_id": 25, "name": "Coffee", "description": "Hot coffee with a choice of milk", "image": "beverages/coffee.png", "price": 3},
         {"restaurant_id": 25, "name": "Orange Juice", "description": "Freshly squeezed orange juice", "image": "beverages/orange_juice.png", "price": 4},
         {"restaurant_id": 25, "name": "Milk", "description": "Cold milk", "image": "beverages/milk.png", "price": 2},
+        
+        # Nhà hàng Ngon
+        {"restaurant_id": 26, "name": "Gỏi cuốn tôm thịt", "description": "Rau sống tươi, bún, tôm và thịt, cuốn trong bánh tráng, ăn kèm nước mắm chua ngọt", "image": "foods/banana_nut_pancakes.png", "price": 9},
+        {"restaurant_id": 26, "name": "Bánh xèo miền Nam", "description": "Bánh xèo vàng giòn, nhân tôm thịt, giá đỗ, chấm nước mắm pha", "image": "foods/banana_nut_pancakes.png", "price": 12},
+        {"restaurant_id": 26, "name": "Chè ba màu", "description": "Đậu xanh, đậu đỏ, thạch lá dứa và nước cốt dừa mát lạnh", "image": "foods/foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 26, "name": "Phở bò tái nạm", "description": "Nước dùng thanh ngọt, thịt bò tái mềm, ăn kèm bánh phở dai ngon", "image": "foods/foods/banana_nut_pancakes.png", "price": 9},
+        {"restaurant_id": 26, "name": "Bánh khọt tôm tươi", "description": "Bánh nhỏ giòn, nhân tôm, dừa nạo, ăn kèm rau sống", "image": "foods/foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 26, "name": "Bún riêu cua", "description": "Nước lèo đậm đà từ cua đồng, ăn cùng rau thơm và bún tươi", "image": "foods/foods/banana_nut_pancakes.png", "price": 5},
+        {"restaurant_id": 26, "name": "Chả giò thịt heo", "description": "Chả giò vàng ruộm, nhân thịt heo và rau củ, giòn tan", "image": "foods/foods/banana_nut_pancakes.png", "price": 6},
+
+        #Cơm Tấm Mộc
+        {"restaurant_id": 27, "name": "Cơm tấm sườn non nướng", "description": "Sườn non ướp đậm vị, nướng thơm, ăn với cơm tấm nóng hổi", "image": "foods/banana_nut_pancakes.png", "price": 13},
+        {"restaurant_id": 27, "name": "Trứng ốp la cơm tấm", "description": "Trứng lòng đào mềm béo, ăn kèm cơm tấm", "image": "foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 27, "name": "Dưa chua ăn kèm", "description": "Dưa chua tự làm, chua nhẹ, giúp cân bằng món chính", "image": "foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 27, "name": "Cơm tấm bì chả", "description": "Bì heo thái sợi dai giòn, chả trứng thơm béo", "image": "foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 27, "name": "Chả cá chiên", "description": "Chả cá thơm lừng, chiên giòn rụm, ăn kèm mắm ngọt", "image": "foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 27, "name": "Cơm tấm gà nướng mật ong", "description": "Gà nướng vàng óng, thơm vị mật ong, hòa quyện với cơm tấm.", "image": "foods/banana_nut_pancakes.png", "price": 12},
+        {"restaurant_id": 27, "name": "Canh chua cá lóc", "description": "Canh chua ngọt mát, cá lóc tươi ngon, ăn kèm cơm tấm", "image": "foods/banana_nut_pancakes.png", "price": 8},
+
+        #Quán Bún Bò Huế O Xuân
+        {"restaurant_id": 28, "name": "Bún bò Huế giò heo", "description": "Nước dùng cay nhẹ, giò heo béo ngậy, thịt bò mềm thơm", "image": "foods/banana_nut_pancakes.png", "price": 9},
+        {"restaurant_id": 28, "name": "Bánh bèo chén", "description": "Bánh bèo mềm mịn, phủ tôm cháy, mỡ hành, nước mắm ngọt", "image": "foods/banana_nut_pancakes.png", "price": 9},
+        {"restaurant_id": 28, "name": "Chả bò hấp", "description": "Chả bò Huế thơm dai, dùng kèm rau sống", "image": "foods/banana_nut_pancakes.png", "price": 5},
+        {"restaurant_id": 28, "name": "Nem lụi Huế", "description": "Nem lụi nướng trên than hoa, chấm kèm nước lèo đậm đà", "image": "foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 28, "name": "Bún hến xào", "description": "Hến xào đậm vị, ăn kèm bún, rau sống và đậu phộng", "image": "foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 28, "name": "Chè bắp Huế", "description": "Chè bắp ngọt dịu, thơm mùi lá dứa và nước cốt dừa", "image": "foods/banana_nut_pancakes.png", "price": 6},
+        {"restaurant_id": 28, "name": "Bánh lọc trần", "description": "Bánh trong suốt, nhân tôm thịt, chấm nước mắm cay ngọt", "image": "foods/banana_nut_pancakes.png", "price": 12},
+
+        #Nhà hàng Phố Biển
+        {"restaurant_id": 29, "name": "Cua rang me", "description": "Cua biển sốt me, thịt cua thấm vị chua ngọt hấp dẫn", "image": "foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 29, "name": "Cá nướng giấy bạc", "description": "Cá tươi giữ trọn vị ngọt, thêm hành và gia vị", "image": "foods/banana_nut_pancakes.png", "price": 10},
+        {"restaurant_id": 29, "name": "Ghẹ hấp bia", "description": "Ghẹ tươi hấp bia thơm nồng, thịt chắc ngọt", "image": "foods/banana_nut_pancakes.png", "price": 11},
+        {"restaurant_id": 29, "name": "Tôm hùm nướng phô mai", "description": "Tôm hùm nướng vàng, phủ phô mai béo ngậy", "image": "foods/banana_nut_pancakes.png", "price": 12},
+        {"restaurant_id": 29, "name": "Mực xào sa tế", "description": "Mực tươi giòn, xào với sa tế cay thơm", "image": "foods/banana_nut_pancakes.png", "price": 12},
+        {"restaurant_id": 29, "name": "Canh chua cá bớp", "description": "Canh chua thanh mát, cá bớp béo ngọt, rau thơm tươi ngon", "image": "foods/banana_nut_pancakes.png", "price": 8},
+        {"restaurant_id": 29, "name": "Hàu nướng mỡ hành", "description": "Hàu nướng vừa chín, mỡ hành và đậu phộng rắc trên", "image": "foods/banana_nut_pancakes.png", "price": 9},
+
+        #Nhà hàng Hội An
+        {"restaurant_id": 30, "name": "Bánh bao Hội An", "description": "Bánh bao nhân thịt hấp mềm mịn, thơm vị cổ truyền", "image": "foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 30, "name": "Mì Quảng gà", "description": "Mì dai ngon, ăn cùng gà xé, đậu phộng và rau sống", "image": "foods/banana_nut_pancakes.png", "price": 7},
+        {"restaurant_id": 30, "name": "Hoành thánh chiên", "description": "Hoành thánh giòn rụm, nhân thịt đậm đà, chấm nước sốt chua ngọt", "image": "foods/banana_nut_pancakes.png", "price": 10},
+        {"restaurant_id": 30, "name": "Cao lầu Hội An", "description": "Cao lầu đặc trưng với sợi mì giòn dai, thịt xíu, rau thơm", "image": "foods/banana_nut_pancakes.png", "price": 11},
+        {"restaurant_id": 30, "name": "Bánh đập hến xào", "description": "Bánh đập giòn tan, hến xào mặn ngọt", "image": "foods/banana_nut_pancakes.png", "price": 15},
+        {"restaurant_id": 30, "name": "Cơm gà Hội An", "description": "Cơm gà xé phay, ăn kèm hành phi và nước mắm pha", "image": "foods/banana_nut_pancakes.png", "price": 14},
+        {"restaurant_id": 30, "name": "Chè hạt sen", "description": "Hạt sen bùi bùi, nấu với nước đường thanh mát.", "image": "foods/banana_nut_pancakes.png", "price": 13},
     ]
 
+    #Nhà hàng ngon
+            #Cơm nhà làm
+            #Phở Quân Hà Nội
+            #Quán Bánh Xèo 46A
+            #Bún Chả Đắc Kim
     # Sample data for restaurants
     users = [
     {
