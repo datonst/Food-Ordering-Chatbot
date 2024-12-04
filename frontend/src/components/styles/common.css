@@ -1,9 +1,9 @@
 /* Main Colors */
-:root {
-  --main-bg-color: #d0d0e4;
-  --secondary-bg-color: #a0b0c5;
-  --accent-color: #8ca4ba;
-  --highlight-color: #a5c6d1;
+:root { 
+  --main-bg-color: #fffefb;
+  --secondary-bg-color: #fff2de;
+  --accent-color: #e8b152;
+  --highlight-color: #f24f04;
 }
 
 /* Container Styling */

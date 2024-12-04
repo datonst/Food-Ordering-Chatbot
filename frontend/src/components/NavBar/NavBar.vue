@@ -16,7 +16,12 @@
     </div>
 
     <div class="right-container">
-      <img class="order-status" src="@/assets/orderStatus.png" alt="Status"/>
+      <img 
+        class="order-status" 
+        src="@/assets/orderStatus.png" 
+        alt="Status" 
+        @click="showOrderStatus" 
+      />
       <!-- 로그인한 상태에서는 유저의 이름과 로그아웃 버튼을 표시 -->
       <div v-if="isLoggedIn" class="user-info">
         <span class="username">{{ username }}</span>
@@ -32,6 +37,7 @@
         <img class="shopping-cart-logo" src="@/assets/shopping-cart-icon.png" alt="Shopping Cart" />
       </div>
     </div>
+
 
     <!-- About Us Modal -->
     <div v-if="showAboutUs" class="about-modal-overlay" @click.self="toggleAboutUs">
@@ -194,6 +200,59 @@
         </form>
       </div>
     </div>
+
+     <!-- Order Status Modal -->
+     <div v-if="showOrderStatusModal" class="order-status-modal">
+      <div class="modal-content">
+        <!-- Close Button -->
+        <img class="close-button" src="@/assets/close-button.png" @click="closeOrderStatusModal" alt="Close" />
+        
+        <!-- Order Number -->
+        <div class="order-number">
+          <p><b>Order #{{ randomOrderId }}</b></p>
+        </div>
+        
+        <!-- Order Status Steps -->
+        <div class="order-status-steps">
+          <div 
+            v-for="(step, index) in orderSteps" 
+            :key="index" 
+            class="order-step"
+          >
+            
+            <!-- Status Circle -->
+            <div 
+              class="status-circle"
+              :class="{
+                completed: step.status === 'completed',
+                pending: step.status === 'pending',
+              }"
+            >
+              <img src="@/assets/check.png" alt="Step Status" />
+            </div>
+            
+            <!-- Step Label -->
+            <p>{{ step.label }}</p>
+          </div>
+        </div>
+        
+        <!-- Order Status Progression -->
+        <div class="order-status-progression">
+          <template v-for="(step, index) in orderSteps" :key="index">
+            <div 
+              v-if="step.status === 'completed'" 
+              class="order-details"
+            >
+              <img src="@/assets/statusIcon.png" alt="Order Status Icon" class="status-icon" />
+              <div class="order-info">
+                <p class="order-label"><b>{{ step.statusDescription }}</b></p>
+                <p class="order-timestamp">{{ formatTimestamp(orderTimestamps[step.timestampKey]) }}</p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 
@@ -203,6 +262,7 @@ import "../styles/shoppingcart.css"
 import "../styles/auth.css"
 import "../styles/aboutUs.css"
 import "../styles/profile.css"
+import "../styles/orderStatus.css"
 import Toast from './Toast.vue'
 import axios from "axios";
 
@@ -216,6 +276,15 @@ export default {
       type: Array,
       default: () => [],
     },
+    orderTimestamps: {
+      type: Object,
+      default: () => ({
+        orderAccepted: null,
+        cookingStarted: null,
+        deliveryStarted: null,
+        orderArrived: null
+      })
+    }
   },
   data() {
     return {
@@ -233,6 +302,34 @@ export default {
       newUsername: '',
       newPassword: '',
       token: null,
+      showOrderStatusModal: false,
+      orderSteps: [
+        {
+          label: 'Accepted',
+          status: this.orderTimestamps.orderAccepted ? 'completed' : 'pending',
+          statusDescription: 'Order accepted at the store',
+          timestampKey: 'orderAccepted'
+        },
+        {
+          label: 'Cooking',
+          status: this.orderTimestamps.cookingStarted ? 'completed' : 'pending',
+          statusDescription: 'Cooking started at the store',
+          timestampKey: 'cookingStarted'
+        },
+        {
+          label: 'Delivery',
+          status: this.orderTimestamps.deliveryStarted ? 'completed' : 'pending',
+          statusDescription: 'Delivery started',
+          timestampKey: 'deliveryStarted'
+        },
+        {
+          label: 'Arrived',
+          status: this.orderTimestamps.orderArrived ? 'completed' : 'pending',
+          statusDescription: 'Order has arrived',
+          timestampKey: 'orderArrived'
+        }
+      ],
+      randomOrderId:  Math.random().toString(36).substr(2, 6).toUpperCase(), 
     }
   },
   computed: {
@@ -247,6 +344,14 @@ export default {
       this.token = token;
       this.isLoggedIn = true;
       this.username = localStorage.getItem('username');
+    }
+  },
+  watch: {
+    orderTimestamps: {
+      deep: true,
+      handler(newTimestamps) {
+        this.updateOrderSteps(newTimestamps);
+      }
     }
   },
   methods: {
@@ -300,6 +405,7 @@ export default {
     async handleSignup(event) {
       event.preventDefault();
       console.log('Signup process started'); 
+     
       
       if (!this.username || !this.fullName || !this.email || !this.password) {
         this.$refs.toast.showToast('All fields are required', 'error');
@@ -350,7 +456,6 @@ export default {
     async handleLogin(event) {
       event.preventDefault();
       console.log('Login process started'); 
-
       const formData = new FormData();
       formData.append('username', this.username);
       formData.append('password', this.password);
@@ -455,6 +560,39 @@ export default {
       this.showEditProfileModal = false;
       this.showProfileModal = true; 
     },
+
+    showOrderStatus() {
+      this.showOrderStatusModal = true;
+    },
+    closeOrderStatusModal() {
+      this.showOrderStatusModal = false;
+    },
+    formatTimestamp(timestamp) {
+      return timestamp ? new Date(timestamp).toLocaleString() : '';
+    },
+    updateOrderSteps(timestamps) {
+      // Update order status by following timestamps
+
+      // Accept order
+      this.orderSteps[0].status = timestamps.orderAccepted 
+        ? "completed" 
+        : "pending";
+      
+      // Start cooking
+      this.orderSteps[1].status = timestamps.cookingStarted 
+        ? "completed" 
+        : (timestamps.orderAccepted ? "pending" : "pending");
+      
+      // Start deliverying
+      this.orderSteps[2].status = timestamps.deliveryStarted 
+        ? "completed" 
+        : (timestamps.cookingStarted ? "pending" : "pending");
+      
+      // Arrived
+      this.orderSteps[3].status = timestamps.orderArrived 
+        ? "completed" 
+        : (timestamps.deliveryStarted ? "pending" : "pending");
+    },
   }
 };
 </script>
@@ -520,6 +658,10 @@ export default {
   z-index: 10;
 }
 
+.order-status-modal >>> .modal-content {
+  width: 43% !important; 
+  max-width: 800px !important;
+}
 
 .close-btn {
   position: absolute;
