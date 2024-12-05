@@ -21,6 +21,7 @@
         src="@/assets/orderStatus.png" 
         alt="Status" 
         @click="showOrderStatus" 
+        ref="orderStatusImg"
       />
       <!-- 로그인한 상태에서는 유저의 이름과 로그아웃 버튼을 표시 -->
       <div v-if="isLoggedIn" class="user-info">
@@ -566,6 +567,9 @@ export default {
     },
     closeOrderStatusModal() {
       this.showOrderStatusModal = false;
+    },
+    toggleOrderStatusFromChatbot() {
+      this.showOrderStatusModal = true;
     },
     formatTimestamp(timestamp) {
       return timestamp ? new Date(timestamp).toLocaleString() : '';
