@@ -73,7 +73,7 @@
       async getRestaurants() {
         try {
           this.restaurants = [];
-          const response = await axios.get(this.baseApiUrl + "/restaurants");
+          const response = await axios.get( "http://localhost:8080/api/restaurants");
           const data = response.data;
           for (let i = 0; i < data.length; i++) {
             this.restaurants.push({

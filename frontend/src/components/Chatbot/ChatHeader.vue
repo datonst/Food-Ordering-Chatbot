@@ -6,7 +6,7 @@
         <span class="user_info_maximized">{{ config.title }}</span>
       </div>
       <div class="user_info_minimized" v-show="isMinimized">
-        <span>Talk to our virtual assistant</span>
+        <span>Nói chuyện với virtual assistant</span>
       </div>
       <button v-show="!isMinimized" @click="$emit('toggle-handsfree')" class="btn-minimize ml-auto" :style="handsFreeFlag? 'background-color: rgba(0, 0, 0, 0.2); radius-border: 20%;' : ''">
         <img src='@/assets/handsfree.svg' alt="Hands-free">
