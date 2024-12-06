@@ -228,7 +228,8 @@
             this.$refs.navBar.showOrderStatus()
           }
           
-          let msg = " Here's the current order status!"
+          //let msg = " Here's the current order status!"
+          let msg = "Đây là tình trạng đặt hàng hiện tại!"
           return msg
         },
        updateOrderStatus(timestampKey, toastMessage) {
@@ -446,7 +447,7 @@
        handleGetRestaurant: function(functionCallResponse){
          this.botTypingMsg = "Searching for restaurants..."
          //let msg = " You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
-         let msg = "Bạn đã tìm thấy trang nhà hàng"
+         let msg = "Bạn tìm thấy trang nhà hàng"
          return msg
          
        },
