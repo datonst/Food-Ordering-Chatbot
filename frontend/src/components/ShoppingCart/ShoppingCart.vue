@@ -23,8 +23,8 @@
     <div v-if="shoppingCart.length">
       <hr/>
       <div class="shopping-cart-footer sticky-bottom" v-if="!isLoading && !orderStatus">
-        <p class="total-price-container">Total Price: {{ totalPrice.toFixed(2) }} $</p>
-        <button @click="submitOrder" class="order-btn">Order</button>
+        <p class="total-price-container">Tổng giá: {{ totalPrice.toFixed(2) }} $</p>
+        <button @click="submitOrder" class="order-btn">Đặt hàng</button>
       </div>
     </div>
 
@@ -59,7 +59,8 @@
       return {
         isLoading: false,
         orderStatus: false,
-        placeholderMsg: "Placing your order...",
+        //placeholderMsg: "Placing your order...",
+        placeholderMsg: "Đang đặt hàng của bạn...",
         orderTimestamps: {
           orderAccepted: null,
           cookingStarted: null,
@@ -88,7 +89,8 @@
       },
       closeFrame() {
         this.$emit('close-cart')
-        this.placeholderMsg = "Placing your order..."
+        //this.placeholderMsg = "Placing your order..."
+        this.placeholderMsg = "Đang đặt hàng của bạn..."
         this.isLoading = false
         this.orderStatus = false
         
@@ -104,11 +106,13 @@
       },
       submitOrder() {
       this.isLoading = true;
-      this.placeholderMsg = "Placing your order..."
+      //this.placeholderMsg = "Placing your order..."
+      this.placeholderMsg = "Đang đặt hàng của bạn..."
       
       setTimeout(() => {
         this.isLoading = false;
-        this.placeholderMsg = "Your order has been sent..."
+        //this.placeholderMsg = "Your order has been sent..."
+        this.placeholderMsg = "Đơn hàng của bạn được gửi rồi..."
         this.orderStatus = true // Sent order
         this.clearCart()
 
@@ -116,7 +120,8 @@
         this.$emit('order-submit');
       }, 2500);
 
-        this.placeholderMsg = "Place your order..."
+        //this.placeholderMsg = "Place your order..."
+        this.placeholderMsg = "Đang đặt hàng của bạn..."
         this.registerAction("placed the order as is")
       },
     // ...

@@ -221,7 +221,8 @@
            }
          }, 1000); // 1초마다 체크
        },handleShowOrderStatus: function(functionCallResponse) {
-          this.botTypingMsg = "Showing order status..."
+          //this.botTypingMsg = "Showing order status..."
+          this.botTypingMsg = "Đang hiển thị trạng thái đặt hàng..."
           
           // Assuming NavBar component has a ref and a method to show order status
           if (this.$refs.navBar) {
@@ -445,14 +446,16 @@
          });
        },
        handleGetRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Searching for restaurants..."
+         //this.botTypingMsg = "Searching for restaurants..."
+         this.botTypingMsg = "Đang tìm nhà hàng..."
          //let msg = " You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
          let msg = "Bạn tìm thấy trang nhà hàng"
          return msg
          
        },
        handleOpenRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Opening restaurant page..."
+         //this.botTypingMsg = "Opening restaurant page..."
+         this.botTypingMsg = "Đang mở trang nhà hàng..."
          // restaurantId in string format to int
          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
          this.$refs.restaurantsContainer.selectRestaurant(parseInt(restaurantId))
@@ -462,7 +465,8 @@
          return msg
        },
        handleCloseRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Closing restaurant page..."
+         //this.botTypingMsg = "Closing restaurant page..."
+          this.botTypingMsg = "Đang đóng trang nhà hàng..."
          this.$refs.restaurantsContainer.deselectRestaurant()
          //let msg = " You closed the restaurant page!";
          let msg = "Bạn đã đóng trang nhà hàng!"
@@ -470,7 +474,8 @@
          return msg
        },
        handleAddFoodToCart: function(functionCallResponse){
-         this.botTypingMsg = "Adding food to cart..."
+         //this.botTypingMsg = "Adding food to cart..."
+         this.botTypingMsg = "Đang thêm thức ăn vào giỏ hàng..."
          // Parsing ids
          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
          let foodId = parseInt(functionCallResponse.data.response.response.food_id)
@@ -492,11 +497,13 @@
          // Opening the shopping cart
          this.openCart()
  
-         return " You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
+         //return " You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
+         return " Bạn thêm "+ food.quantity + " "+ food.name + " vào giỏ hàng"
        },
  
        handleRemoveFoodFromCart: function(functionCallResponse){
-         this.botTypingMsg = "Removing food from cart..."
+         //this.botTypingMsg = "Removing food from cart..."
+         this.botTypingMsg = "Đang xóa thực phẩm khỏi giỏ hàng..."
          // Parsing ids
          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
          let foodId = parseInt(functionCallResponse.data.response.response.food_id)
@@ -507,54 +514,60 @@
          let foodItem = shoppingCartItems.find(item => item.uuid === foodId)
          this.openCart()
          this.removeFromCart(foodItem)
-         return " You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
-         // return 
+         //return " You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
+         return " Bạn xóa "+ foodItem.quantity + " "+ foodItem.name + " từ giỏ hàng"
        },
        handlePlaceOrder: function(functionCallResponse){
-         this.botTypingMsg = "Placing order..."
+         //this.botTypingMsg = "Placing order..."
+         this.botTypingMsg = "Đang đặt hàng..."
          this.$refs.shoppingCart.submitOrder()
          //let msg = " You placed the order!"
          let msg = "Bạn đã đặt hàng rồi"
          return msg
        },
        handleGetActions: function(functionCallResponse){
-         this.botTypingMsg = "Getting your latest actions..."
+         //this.botTypingMsg = "Getting your latest actions..."
+         this.botTypingMsg = "Lấy những hành động vừa qua của bạn...."
          let msg = JSON.stringify(this.actions.splice(-10))
          console.log("Compiling latest actions")
          console.log(msg)
          return msg
        },
        handleGetCurrentRestaurantMenu: function(functionCallResponse){
-         this.botTypingMsg = "Getting the menu of the restaurant..."
+         //this.botTypingMsg = "Getting the menu of the restaurant..."
+         this.botTypingMsg = "Lấy thực đơn của nhà hàng..."
          console.log(functionCallResponse)
          let menu = functionCallResponse.data.response["formatted"]
          console.log(menu)
          return menu
        },
        handleOpenShoppingCart: function(functionCallResponse){
-         this.botTypingMsg = "Opening the shopping cart..."
+         //this.botTypingMsg = "Opening the shopping cart..."
+         this.botTypingMsg = "Đang mở ra trang giỏ hàng..."
          this.openCart()
          // If the shopping cart is not empty, we show the content
          if (this.shoppingCart.length > 0){
            //let msg = " You opened the shopping cart! Here's the content you founded:" + JSON.stringify(this.shoppingCart)
-           let msg = "Bạn đã mở xe đẩy mua sắm! Đây là nội dung bạn đã tìm thấy"
+           let msg = "Bạn đã mở giỏ hàng! Đây là nội dung bạn đã tìm thấy"
            return msg
          } else {
            //let msg = " You opened the shopping cart! It's empty!"
-           let msg = "Bạn đã mở xe đẩy mua sắm! Nó trống rỗng!"
+           let msg = "Bạn đã mở giỏ hàng! Nó trống rỗng!"
            return msg
          }
          return msg
        },
        handleCloseShoppingCart: function(functionCallResponse){
-         this.botTypingMsg = "Closing the shopping cart..."
+         //this.botTypingMsg = "Closing the shopping cart..."
+         this.botTypingMsg = "Đang đóng trang giỏ hàng..."
          this.closeCart()
          //let msg = " You closed the shopping cart!"
          let msg ="Bạn đã đóng xe đẩy mua sắm!"
          return msg
        },
        handleActivateHandsFree: function(functionCallResponse){
-         this.botTypingMsg = "Activating handsfree experience..."
+         //this.botTypingMsg = "Activating handsfree experience..."
+         this.botTypingMsg = "Kích hoạt trải nghiệm rảnh tay..."
          //let msg = " You activated the handsfree voice experience"
          let msg = "Bạn đã kích hoạt trải nghiệm giọng nói tự do của đôi tay"
          this.handsFreeFlag = true
