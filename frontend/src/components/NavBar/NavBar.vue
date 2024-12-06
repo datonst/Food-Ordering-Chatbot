@@ -306,27 +306,27 @@ export default {
       showOrderStatusModal: false,
       orderSteps: [
         {
-          label: 'Accepted',
+          label: 'Chấp nhận',
           status: this.orderTimestamps.orderAccepted ? 'completed' : 'pending',
-          statusDescription: 'Order accepted at the store',
+          statusDescription: 'Nhà hàng chấp nhận đặt hàng của bạn thành công.',
           timestampKey: 'orderAccepted'
         },
         {
-          label: 'Cooking',
+          label: 'Bắt đầu nấu ăn',
           status: this.orderTimestamps.cookingStarted ? 'completed' : 'pending',
-          statusDescription: 'Cooking started at the store',
+          statusDescription: 'Nhà hàng chấp nhận đặt hàng của bạn thành công.',
           timestampKey: 'cookingStarted'
         },
         {
-          label: 'Delivery',
+          label: 'Băt đầu giao hàng',
           status: this.orderTimestamps.deliveryStarted ? 'completed' : 'pending',
-          statusDescription: 'Delivery started',
+          statusDescription: 'Đơn hàng sẽ sớm được giao.',
           timestampKey: 'deliveryStarted'
         },
         {
-          label: 'Arrived',
+          label: 'Đã giao',
           status: this.orderTimestamps.orderArrived ? 'completed' : 'pending',
-          statusDescription: 'Order has arrived',
+          statusDescription: 'Giao hàng thành công!',
           timestampKey: 'orderArrived'
         }
       ],
