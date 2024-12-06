@@ -228,7 +228,7 @@
             this.$refs.navBar.showOrderStatus()
           }
           
-          //let msg = " Here's the current order status!"
+          let msg = " Here's the current order status!"
           return msg
         },
        updateOrderStatus(timestampKey, toastMessage) {
