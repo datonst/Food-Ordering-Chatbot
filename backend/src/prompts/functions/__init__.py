@@ -50,7 +50,11 @@ def filter_allowed_functions(data):
         if function.get('allow', False):
             # Remove the 'allow' key-value pair
             function.pop('allow', None)
-            allowed_functions.append(function)
+            value ={
+                "type": "function",
+                "function": function
+            }
+            allowed_functions.append(value)
     return allowed_functions
 
 def write_to_json_file(data, file_path):
@@ -58,6 +62,6 @@ def write_to_json_file(data, file_path):
         json.dump(data, file, indent=4)
 
 yaml_data = read_yaml_file(_config_file)
-ALL_ALLOWED_FUNCTIONS = yaml_data
+ALL_ALLOWED_FUNCTIONS = filter_allowed_functions(yaml_data)
 
 write_to_json_file(ALL_ALLOWED_FUNCTIONS, os.path.join(_current_dir, 'signatures.json'))

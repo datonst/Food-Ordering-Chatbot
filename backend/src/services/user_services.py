@@ -1,5 +1,6 @@
-import sys
-sys.path.append('/Users/raiju/chatbot-TTNM/backend')
+import dotenv
+dotenv.load_dotenv()
+
 import jwt
 from jose import JWTError
 from typing import Optional

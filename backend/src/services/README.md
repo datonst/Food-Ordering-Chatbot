@@ -11,7 +11,7 @@
 - `remove_food_from_cart(CONFIG, restaurant_uuid, food_id)`: Removes a food item from the cart. Returns a dictionary containing the restaurant UUID and food ID.
 
 ## OpenAI Services
-
+sudo apt install ffmpeg
 - `chat_completion(messages, CONFIG, functions, client)`: Receives the chatlog from the user and answers. Returns the response from the OpenAI API.
 - `embeddings(content, CONFIG, client)`: Receives a content in text and embeds it. Returns the embedded content.
 - `tts(text, CONFIG, client)`: Receives text and returns the audio bytes. Returns the audio in base64 format.

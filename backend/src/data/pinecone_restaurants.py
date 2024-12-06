@@ -1,7 +1,7 @@
 # Env variables loader
 import os
 import dotenv
-dotenv.load_dotenv(dotenv_path="../../.env")
+dotenv.load_dotenv(dotenv_path="../.env")
 
 # Data handlers
 import pandas as pd
@@ -97,7 +97,7 @@ def process_restaurants():
     embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
     # llm = OpenAI(model="gpt-4")
     Settings.embed_model = embed_model
-    
+    print(documents)
     index = VectorStoreIndex.from_documents(
         documents=documents,
         storage_context=storage_context,
@@ -107,6 +107,10 @@ def process_restaurants():
     return index
 
 def load_index():
+    model_name = "models/text-embedding-004"
+    embed_model = GeminiEmbedding(model_name=model_name, api_key=GOOGLE_API_KEY)
+    # llm = OpenAI(model="gpt-4")
+    Settings.embed_model = embed_model
     vector_store = PineconeVectorStore(
         index_name=INDEX_NAME,
         environment=ENVIRONMENT,
@@ -143,7 +147,7 @@ def main():
         "hybrid_retriever": [],
         "hsnw": [],
     }
-    query = "testing, I would like to order a large pizza with mango, thai food, taco fiesta"
+    query = "cho tôi nhà hàng sushi"
     model= genai.GenerativeModel(
             'gemini-1.5-flash-8b',
             # tools = functions,

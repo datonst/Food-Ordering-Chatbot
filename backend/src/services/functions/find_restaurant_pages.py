@@ -9,7 +9,7 @@ async def find_restaurant_pages(
         type_of_restaurant=None,
         food_requested=None,
         other_information=None,
-        quantity=1,
+        quantity=3,
     ):
     """Opens the restaurant page"""
 
