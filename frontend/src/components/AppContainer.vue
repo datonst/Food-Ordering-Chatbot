@@ -1,6 +1,6 @@
 
 <template>
-  <nav-bar :shopping-cart="shoppingCart" @open-cart="openCart" @track-order="trackOrder"></nav-bar>
+  <nav-bar ref="navBar" :shopping-cart="shoppingCart" @open-cart="openCart" @track-order="trackOrder"></nav-bar>
   <shopping-cart
     v-if="isCartOpen"
     ref="shoppingCart"
@@ -220,8 +220,8 @@
           this.botTypingMsg = "Đang hiển thị trạng thái đặt hàng..."
           
           // Assuming NavBar component has a ref and a method to show order status
-          if (this.$refs.NavBar) {
-            this.$refs.NavBar.showOrderStatus()
+          if (this.$refs.navBar) {
+            this.$refs.navBar.showOrderStatus()
           }
           
           //let msg = " Here's the current order status!"
