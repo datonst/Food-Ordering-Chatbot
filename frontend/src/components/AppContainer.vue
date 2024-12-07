@@ -1,6 +1,12 @@
 
 <template>
-  <nav-bar ref="navBar" :shopping-cart="shoppingCart" @open-cart="openCart" @track-order="trackOrder"></nav-bar>
+  <nav-bar 
+  ref="navBar" 
+  :shopping-cart="shoppingCart" 
+  :order-timestamps="orderTimestamps"
+  @open-cart="openCart" 
+  @track-order="trackOrder"
+  ></nav-bar>
   <shopping-cart
     v-if="isCartOpen"
     ref="shoppingCart"
