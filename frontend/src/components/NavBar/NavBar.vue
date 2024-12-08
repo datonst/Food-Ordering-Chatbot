@@ -318,13 +318,13 @@ export default {
           timestampKey: 'cookingStarted'
         },
         {
-          label: 'Băt đầu giao hàng',
+          label: 'Giao hàng',
           status: this.orderTimestamps.deliveryStarted ? 'completed' : 'pending',
           statusDescription: 'Đơn hàng sẽ sớm được giao.',
           timestampKey: 'deliveryStarted'
         },
         {
-          label: 'Đã giao',
+          label: 'Giao hàng thành công',
           status: this.orderTimestamps.orderArrived ? 'completed' : 'pending',
           statusDescription: 'Giao hàng thành công!',
           timestampKey: 'orderArrived'
