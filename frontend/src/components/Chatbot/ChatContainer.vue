@@ -158,20 +158,22 @@ export default {
       });
     },
     animateChatClosing() {
-      // Assuming .chat-body and .chat-footer are the elements to animate
-      const chatBody = this.$refs.chatBody.$el; 
-      const chatFooter = this.$refs.chatFooter.$el;
+      this.$nextTick(() => {
+        // Assuming .chat-body and .chat-footer are the elements to animate
+        const chatBody = this.$refs.chatBody.$el; 
+        const chatFooter = this.$refs.chatFooter.$el;
 
-      // Fade out the chat body and footer with a transition
-      chatBody.style.transition = 'opacity 0.5s ease';
-      chatFooter.style.transition = 'opacity 0.5s ease';
-      chatBody.style.opacity = '0';
-      chatFooter.style.opacity = '0';
+        // Fade out the chat body and footer with a transition
+        chatBody.style.transition = 'opacity 0.5s ease';
+        chatFooter.style.transition = 'opacity 0.5s ease';
+        chatBody.style.opacity = '0';
+        chatFooter.style.opacity = '0';
 
-      // Wait for the fade-out transition to finish before minimizing the container
-      setTimeout(() => {
-        this.$el.classList.add('minimized');
-      }, 500); 
+        // Wait for the fade-out transition to finish before minimizing the container
+        setTimeout(() => {
+          this.$el.classList.add('minimized');
+        }, 500); 
+      });
     },
   }
 };

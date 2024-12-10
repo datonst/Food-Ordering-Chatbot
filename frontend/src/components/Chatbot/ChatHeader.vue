@@ -8,9 +8,6 @@
       <div class="user_info_minimized" v-show="isMinimized">
         <span>Nói chuyện với virtual assistant</span>
       </div>
-      <button v-show="!isMinimized" @click="$emit('toggle-handsfree')" class="btn-minimize ml-auto" :style="handsFreeFlag? 'background-color: rgba(0, 0, 0, 0.2); radius-border: 20%;' : ''">
-        <img src='@/assets/handsfree.svg' alt="Hands-free">
-      </button>
       <button @click="$emit('toggle-chatbot')" class="btn-minimize ml-auto">
         <img :src="isMinimized ? 'maximize_icon.svg' : 'minimize_icon.svg'" alt="Toggle">
       </button>
@@ -43,4 +40,3 @@ export default {
   },
 };
 </script>
-
