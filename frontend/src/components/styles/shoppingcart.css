@@ -1,0 +1,118 @@
+/* Shopping Cart */
+.shopping-cart {
+    position: relative;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 15%;
+    margin-right: 10px;
+}
+
+.shopping-cart-logo {
+    display: block;
+    border-radius: 25%;
+    height: 3vh;
+    width: 3vh;
+    margin-right: 1.6vh;
+}
+
+.shopping-cart:hover {
+    background: rgba(212, 163, 115, 0.15); /* Light hover effect using accent color */
+}
+
+.cart-item-count {
+    position: relative;
+    top: 6px;
+    right: -12px;
+    background-color: #e8b152; /* Accent color */
+    color: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Shopping Cart Container */
+.shopping-cart-container {
+    position: fixed;
+    top: 3vh; 
+    right: 4vw;
+    z-index: 9999;
+    width: 30vw;
+    background-color: rgb(246, 244, 244); /* Main background color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 16px;
+    animation: fadeInSlideUp 0.3s ease forwards;
+    max-height: 100vh;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: gray;/* Color gradient */
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    line-height: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background: rgb(96, 91, 91);
+}
+
+/* Order Button */
+.order-btn {
+    background: linear-gradient(to top right, rgb(230, 209, 176), #e8b152); /* Color gradient */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.order-btn:hover {
+    background: rgba(212, 163, 115, 0.75); /* Darker shade on hover */
+}
+
+/* Total Price Container */
+.total-price-container {
+    font-weight: bold;
+    font-size: 18px;
+    color:rgb(112, 112, 112); /* Accent color */
+}
+
+
+/* Cart Body */
+.shopping-cart-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 150vh;
+    background: rgb(246, 244, 244); /* Main background color */
+}
+
+/* Cart Footer */
+.shopping-cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #e8b152; /* Accent color */
+    margin-top: 30px;
+    background: rgb(246, 244, 244);
+}
+
+/* Fade Away Animation */
+.fade-away {
+    animation: fadeAway 0.5s forwards;
+}

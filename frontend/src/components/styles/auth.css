@@ -1,0 +1,153 @@
+:root { 
+    --main-bg-color: #fffefb;
+    --secondary-bg-color: #fff2de;
+    --accent-color: #e8b152;
+    --highlight-color: #f24f04;
+  }
+
+.right-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login {
+    position: relative;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 15%;
+}
+
+.login-logo {
+    display: block;
+    border-radius: 25%;
+    height: 3vh;
+    width: 3vh;
+}
+
+.login:hover {
+    background: rgba(212, 163, 115, 0.15); 
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.55);
+    /*background-color: rgba(0, 0, 0, 0.5);*/
+}
+
+/* Modal Content */
+.auth-form modal-content{
+    background-color: skyblue;
+}
+
+.auth-form {
+    background-color:#40405d;
+    padding: 20px;
+    border-radius: 10px;
+    width: 55%;
+    max-width: 450px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    text-align: center;
+    position: relative;
+}
+
+.auth-form h3 {
+    color: rgb(33, 33, 81);
+    margin-bottom: 28px;
+    font-weight: bold;
+}
+
+.auth-form input {
+    width: 85%;
+    padding: 10px;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    margin-top: 20px;
+    margin-left: 25px;
+}
+
+.auth-form button {
+    margin: 15px auto 0;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+}
+
+.auth-form button:hover {
+    background-color: lightgray;
+}
+
+.auth-form .toggle-btn {
+    background: none;
+    color: rgb(25, 25, 66);
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.auth-form .toggle-btn:hover {
+    color: rgb(25, 25, 66);
+}
+
+/* Close Button */
+.auth-form .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: none;
+}
+
+.auth-form .close-btn:hover {
+    opacity: 0.8;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .username {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .user-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .logout-btn {
+    background-color: var(--main-bg-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .logout-btn:hover {
+    background-color: rgb(31, 31, 90);
+  }
+  

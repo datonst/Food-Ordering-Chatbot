@@ -1,0 +1,12 @@
+{
+    "title": "Virtual assistant",
+    "images": {
+        "header_image": "favicon-white.svg",
+        "bot_image": "favicon.png"
+    },
+    "fstMsg": "Xin chào, tôi ở đây để giúp bạn đặt bữa tối, xin vui lòng cho tôi biết bạn muốn gọi món gì lần này!",
+    "typingMsg": "Đang suy nghĩ...",
+    "transcribingMsg": "Đang viết...",
+    "loadMsgPlaceholder": "Loading...",
+    "msgPlaceholder": "Cho tôi biết tôi có thể giúp gì cho bạn...."
+}
