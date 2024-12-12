@@ -380,7 +380,7 @@ def main():
         {"restaurant_id": 4, "name": "Ghẹ hấp bia", "description": "Ghẹ tươi hấp bia thơm nồng, thịt chắc ngọt", "image": "foods/ghe_hap_bia.png", "price": 11},
         {"restaurant_id": 4, "name": "Tôm hùm nướng phô mai", "description": "Tôm hùm nướng vàng, phủ phô mai béo ngậy", "image": "foods/tom_hum_nuong_pho_mai.png", "price": 12},
         {"restaurant_id": 4, "name": "Mực xào sa tế", "description": "Mực tươi giòn, xào với sa tế cay thơm", "image": "foods/muc_xao_sa_te.png", "price": 12},
-        {"restaurant_id": 4, "name": "Canh chua cá bớp", "description": "Canh chua thanh mát, cá bớp béo ngọt, rau thơm tươi ngon", "image": "foods/canh_chua_ca_bop.png", "price": 8},
+        {"restaurant_id": 4, "name": "Canh chua cá bớp", "description": "Canh chua thanh mát, cá bớp béo ngọt, rau thơm tươi ngon", "image": "restaurants/canh_chua_ca_bop.png", "price": 8},
         {"restaurant_id": 4, "name": "Hàu nướng mỡ hành", "description": "Hàu nướng vừa chín, mỡ hành và đậu phộng rắc trên", "image": "foods/hau_nuong_mo_hanh.png", "price": 9},
 
         #Nhà hàng Hội An
