@@ -130,7 +130,7 @@
         userTranscribing: false,
 
         currentPage: 'home',
-        isLoggedIn: false,
+        isLoggedIn: true,
       }
     },
     methods: {
