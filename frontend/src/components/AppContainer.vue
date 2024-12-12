@@ -1,6 +1,7 @@
 <template>
   <nav-bar 
     :shopping-cart="shoppingCart" 
+    :order-timestamps="orderTimestamps"
     @open-cart="openCart" 
     @track-order="trackOrder"
     @navigate="handleNavigation"
@@ -130,10 +131,26 @@
         userTranscribing: false,
 
         currentPage: 'home',
-        isLoggedIn: true,
+        isLoggedIn: null,
       }
     },
+    mounted() {
+      this.checkLoginStatus();
+    },
+
     methods: {
+      
+    checkLoginStatus() {
+    // Simulate an API call or local storage check for login status
+    const savedLoginStatus = localStorage.getItem('isLoggedIn'); // Example using localStorage
+    this.isLoggedIn = savedLoginStatus === 'true';
+
+    if (this.isLoggedIn) {
+      this.currentPage = 'restaurants';
+    } else {
+      this.currentPage = 'login'; // Redirect to login page or any default
+    }
+    },
       // -- Shopping Cart --
       openCart() {
         let flag_register_new_action = true;
@@ -448,7 +465,7 @@
              console.log(functionCallResponseContent);
  
              resolve({
-               role: "assistant",
+               role: "function",
                content: functionCallResponseContent,
                name: functionCallSignal.name,
              });
@@ -458,114 +475,222 @@
            }
          });
        },
-       handleGetRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Searching for restaurants..."
-         let msg = " You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
-         return msg
-         
-       },
-       handleOpenRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Opening restaurant page..."
-         // restaurantId in string format to int
-         let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
-         this.$refs.restaurantsContainer.selectRestaurant(parseInt(restaurantId))
-         let msg = " You opened the restaurant page for " + restaurantId + "!";
-         console.log(msg)
-         return msg
-       },
-       handleCloseRestaurant: function(functionCallResponse){
-         this.botTypingMsg = "Closing restaurant page..."
-         this.$refs.restaurantsContainer.deselectRestaurant()
-         let msg = " You closed the restaurant page!";
-         console.log(msg)
-         return msg
-       },
-       handleAddFoodToCart: function(functionCallResponse){
-         this.botTypingMsg = "Adding food to cart..."
-         // Parsing ids
-         let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
-         let foodId = parseInt(functionCallResponse.data.response.response.food_id)
-         
-         // Making sure the selected restaurant is the one we want
-         let restaurantContainer = this.$refs.restaurantsContainer
-         let restaurants = restaurantContainer.restaurants
-         restaurantContainer.selectRestaurant(restaurantId)
- 
-         // Finding the right food, editing it
-         let restaurantPage = restaurantContainer.$refs.restaurantFullView
-         let foods = restaurantPage.foods
-         let food = foods.find(food => food.uuid === foodId)
-         food.quantity = functionCallResponse.data.response.response.quantity
-         
-         // Adding it to the shopping cart
-         restaurantPage.addToCart(food)
-         
-         // Opening the shopping cart
-         this.openCart()
- 
-         return " You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
-       },
- 
-       handleRemoveFoodFromCart: function(functionCallResponse){
-         this.botTypingMsg = "Removing food from cart..."
-         // Parsing ids
-         let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
-         let foodId = parseInt(functionCallResponse.data.response.response.food_id)
- 
-         // selecting shopping cart
-         let shoppingCartContainer = this.$refs.shoppingCart
-         let shoppingCartItems = shoppingCartContainer.shoppingCart
-         let foodItem = shoppingCartItems.find(item => item.uuid === foodId)
-         this.openCart()
-         this.removeFromCart(foodItem)
-         return " You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
-         // return 
-       },
-       handlePlaceOrder: function(functionCallResponse){
-         this.botTypingMsg = "Placing order..."
-         this.$refs.shoppingCart.submitOrder()
-         let msg = " You placed the order!"
-         return msg
-       },
-       handleGetActions: function(functionCallResponse){
-         this.botTypingMsg = "Getting your latest actions..."
-         let msg = JSON.stringify(this.actions.splice(-10))
-         console.log("Compiling latest actions")
-         console.log(msg)
-         return msg
-       },
-       handleGetCurrentRestaurantMenu: function(functionCallResponse){
-         this.botTypingMsg = "Getting the menu of the restaurant..."
-         console.log(functionCallResponse)
-         let menu = functionCallResponse.data.response["formatted"]
-         console.log(menu)
-         return menu
-       },
-       handleOpenShoppingCart: function(functionCallResponse){
-         this.botTypingMsg = "Opening the shopping cart..."
-         this.openCart()
-         // If the shopping cart is not empty, we show the content
-         if (this.shoppingCart.length > 0){
-           let msg = " You opened the shopping cart! Here's the content you founded:" + JSON.stringify(this.shoppingCart)
-           return msg
-         } else {
-           let msg = " You opened the shopping cart! It's empty!"
-           return msg
-         }
-         return msg
-       },
-       handleCloseShoppingCart: function(functionCallResponse){
-         this.botTypingMsg = "Closing the shopping cart..."
-         this.closeCart()
-         let msg = " You closed the shopping cart!"
-         return msg
-       },
-       handleActivateHandsFree: function(functionCallResponse){
-         this.botTypingMsg = "Activating handsfree experience..."
-         let msg = " You activated the handsfree voice experience"
-         this.handsFreeFlag = true
-         return msg
-       },
+                handleGetRestaurant: function(functionCallResponse){
+
+          this.botTypingMsg = "Searching for restaurants..."
+
+          let msg = "@agent-action: You found the restaurant page(s) for " + JSON.stringify(functionCallResponse.data.response) + "!";
+
+          return msg
+
+
+
+          },
+
+          handleOpenRestaurant: function(functionCallResponse){
+
+          this.botTypingMsg = "Opening restaurant page..."
+
+          // restaurantId in string format to int
+
+          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
+
+          this.$refs.restaurantsContainer.selectRestaurant(parseInt(restaurantId))
+
+          let msg = "@agent-action: You opened the restaurant page for " + restaurantId + "!";
+
+          console.log(msg)
+
+          return msg
+
+          },
+
+          handleCloseRestaurant: function(functionCallResponse){
+
+          this.botTypingMsg = "Closing restaurant page..."
+
+          this.$refs.restaurantsContainer.deselectRestaurant()
+
+          let msg = "@agent-action: You closed the restaurant page!";
+
+          console.log(msg)
+
+          return msg
+
+          },
+
+          handleAddFoodToCart: function(functionCallResponse){
+
+          this.botTypingMsg = "Adding food to cart..."
+
+          // Parsing ids
+
+          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
+
+          let foodId = parseInt(functionCallResponse.data.response.response.food_id)
+
+
+
+          // Making sure the selected restaurant is the one we want
+
+          let restaurantContainer = this.$refs.restaurantsContainer
+
+          let restaurants = restaurantContainer.restaurants
+
+          restaurantContainer.selectRestaurant(restaurantId)
+
+
+
+          // Finding the right food, editing it
+
+          let restaurantPage = restaurantContainer.$refs.restaurantFullView
+
+          let foods = restaurantPage.foods
+
+          let food = foods.find(food => food.uuid === foodId)
+
+          food.quantity = functionCallResponse.data.response.response.quantity
+
+
+
+          // Adding it to the shopping cart
+
+          restaurantPage.addToCart(food)
+
+
+
+          // Opening the shopping cart
+
+          this.openCart()
+
+
+
+          return "@agent-action: You added "+ food.quantity + " of "+ food.name + " to the shopping cart!"
+
+          },
+
+
+
+          handleRemoveFoodFromCart: function(functionCallResponse){
+
+          this.botTypingMsg = "Removing food from cart..."
+
+          // Parsing ids
+
+          let restaurantId = parseInt(functionCallResponse.data.response.response.restaurant_uuid)
+
+          let foodId = parseInt(functionCallResponse.data.response.response.food_id)
+
+
+
+          // selecting shopping cart
+
+          let shoppingCartContainer = this.$refs.shoppingCart
+
+          let shoppingCartItems = shoppingCartContainer.shoppingCart
+
+          let foodItem = shoppingCartItems.find(item => item.uuid === foodId)
+
+          this.openCart()
+
+          this.removeFromCart(foodItem)
+
+          return "@agent-action: You removed "+ foodItem.quantity + " of "+ foodItem.name + " from the shopping cart!"
+
+          // return 
+
+          },
+
+          handlePlaceOrder: function(functionCallResponse){
+
+          this.botTypingMsg = "Placing order..."
+
+          this.$refs.shoppingCart.submitOrder()
+
+          let msg = "@agent-action: You placed the order!"
+
+          return msg
+
+          },
+
+          handleGetActions: function(functionCallResponse){
+
+          this.botTypingMsg = "Getting your latest actions..."
+
+          let msg = JSON.stringify(this.actions.splice(-10))
+
+          console.log("Compiling latest actions")
+
+          console.log(msg)
+
+          return msg
+
+          },
+
+          handleGetCurrentRestaurantMenu: function(functionCallResponse){
+
+          this.botTypingMsg = "Getting the menu of the restaurant..."
+
+          console.log(functionCallResponse)
+
+          let menu = functionCallResponse.data.response["formatted"]
+
+          console.log(menu)
+
+          return menu
+
+          },
+
+          handleOpenShoppingCart: function(functionCallResponse){
+
+          this.botTypingMsg = "Opening the shopping cart..."
+
+          this.openCart()
+
+          // If the shopping cart is not empty, we show the content
+
+          if (this.shoppingCart.length > 0){
+
+            let msg = "@agent-action: You opened the shopping cart! Here's the content you founded:" + JSON.stringify(this.shoppingCart)
+
+            return msg
+
+          } else {
+
+            let msg = "@agent-action: You opened the shopping cart! It's empty!"
+
+            return msg
+
+          }
+
+          return msg
+
+          },
+
+          handleCloseShoppingCart: function(functionCallResponse){
+
+          this.botTypingMsg = "Closing the shopping cart..."
+
+          this.closeCart()
+
+          let msg = "@agent-action: You closed the shopping cart!"
+
+          return msg
+
+          },
+
+          handleActivateHandsFree: function(functionCallResponse){
+
+          this.botTypingMsg = "Activating handsfree experience..."
+
+          let msg = "@agent-action: You activated the handsfree voice experience"
+
+          this.handsFreeFlag = true
+
+          return msg
+
+          },
+
  
        // Utils
        getChatHistory: function(){

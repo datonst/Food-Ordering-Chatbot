@@ -418,7 +418,6 @@ export default {
         const errorMessage = error.response?.data?.detail || 'Invalid username or password';
         this.$refs.toast.showToast(errorMessage, 'error');
       }
-
     },
 
     resetForm() {

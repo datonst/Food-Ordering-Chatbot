@@ -1,4 +1,4 @@
-FROM python:3.11.5
+FROM python:3.11.10
 
 COPY pyproject.toml ./
 
@@ -17,4 +17,3 @@ VOLUME /app
 ENV PYTHONPATH=/app
 
 CMD ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
-
