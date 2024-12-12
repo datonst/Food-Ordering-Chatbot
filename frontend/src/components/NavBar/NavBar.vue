@@ -12,7 +12,7 @@
     <!-- Center Section with About Us & Shops Links -->
     <div class="center-container">
       <div class="shops" @click="closeAboutUs">SHOPS</div>
-      <div class="aboutUs" @click="toggleAboutUs">ABOUT US</div>
+      <div class="aboutUs" @click="goToHome">HOME</div>
     </div>
 
     <div class="right-container">
@@ -39,86 +39,6 @@
       </div>
     </div>
 
-
-    <!-- About Us Modal -->
-    <div v-if="showAboutUs" class="about-modal-overlay" @click.self="toggleAboutUs">
-      <div class="categories-modal-content modal-content">
-        <img class="close-btn" src="@/assets/close-button.png" @click="toggleAboutUs" />
-        <section class="categories" id="categories">
-          <div class="center-text">
-            <strong>Categories</strong>
-            <h2>Explore Culinary Delights</h2>
-          </div>
-          <div ref="categoriesContainer" class="categories-content">
-            <div class="box">
-              <div class="box-img">
-                <img src="@/assets/images/categories/food.webp" loading="lazy" width="501px" height="500px" alt="Grilled steak served with a fresh garden salad and a side of mayonnaise">
-              </div>
-              <h3>World Bites</h3>
-              <p>Experience global flavors with our International Delights, a curated journey through diverse cuisines that transport your taste buds.</p>
-            </div>
-            <div class="box">
-              <div class="box-img">
-                <img src="@/assets/images/categories/burger.webp" loading="lazy" width="600px" height="600px" alt="Close-up of a cheeseburger with lettuce, tomato, onion, pickles, and a sesame seed bun">
-              </div>
-              <h3>Gourmet Burgers</h3>
-              <p>Elevate your burger experience with our Gourmet Burgers, crafted with premium ingredients for a unique and savory taste adventure.</p>
-            </div>
-            <div class="box">
-              <div class="box-img">
-                <img src="@/assets/images/categories/pastries.webp" loading="lazy" width="512px" height="512px" alt="Plate of assorted pastries and donuts with various toppings and decorations">
-              </div>
-              <h3>Sweet Temptations</h3>
-              <p>Indulge in Sweet Temptations, a paradise of heavenly pastries and desserts that promise to delight your senses.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="history" id="history">
-          <div ref="historyImg" class="history-img">
-              <img src="@/assets/images/pizza.webp"
-                  loading="lazy"
-                  width="400px"
-                  height="315px"
-                  alt="">
-          </div>
-
-          <div ref="historyText" class="history-text">
-              <h1 class="history-title">Our History</h1>
-              <h2>Discover Our Glory begenning</h2>
-              <p>We promise you'll enjoy every sweet moment to find your favourite. Eat what you love and save your time.</p>
-              <a href="#" class="btn">Learn More</a>
-          </div>
-        </section>
-
-        <section class="services" id="services">
-          <div class="center-text">
-              <h1 class="services-title">Offering</h1>
-              <h2 class="service-subtitle">Our amazing services</h2>
-          </div>
-          
-          <div ref="servicesContainer" class="services-container">
-              <div class="services-content">
-                  <img class="services-img" src="@/assets/images/services/dish.png" loading="lazy" alt="dish icon">
-                  <h3 class="services-title">Excellent food</h3>
-                  <p class="services-description">Savor the excellence in every bite at our establishment. Our chefs craft each dish with precision, delivering a delightful culinary experience that sets the standard for quality.</p>
-              </div>
-
-              <div class="services-content">
-                  <img class="services-img" src="@/assets/images/services/pizza.png" loading="lazy" alt="pizza icon">
-                  <h3 class="services-title">Fast food</h3>
-                  <p class="services-description">Experience quick and satisfying flavors with our fast food service. Enjoy deliciousness on the go without compromising speed. Taste the convenience of a swift culinary journey.</p>
-              </div>
-
-              <div class="services-content">
-                  <img class="services-img" src="@/assets/images/services/truck.png" loading="lazy" alt="truck icon">
-                  <h3 class="services-title">Delivery</h3>
-                  <p class="services-description">Bringing exceptional flavors to your doorstep, our delivery service ensures a seamless and flavorful experience. Enjoy our delectable creations from the comfort of your home, delivered with reliability and convenience.</p>
-              </div>
-          </div>
-        </section>
-      </div>
-    </div>
 
     <!-- Login/Signup Modal -->
     <div v-if="showLogin" class="login-modal-overlay" @click.self="toggleLogin">
@@ -269,6 +189,7 @@ import axios from "axios";
 
 export default {
   name: "NavBar",
+  emits: ['show-home', 'login-state-change'],
   components: {
     Toast
   },
@@ -318,13 +239,13 @@ export default {
           timestampKey: 'cookingStarted'
         },
         {
-          label: 'Giao hàng',
+          label: 'Băt đầu giao hàng',
           status: this.orderTimestamps.deliveryStarted ? 'completed' : 'pending',
           statusDescription: 'Đơn hàng sẽ sớm được giao.',
           timestampKey: 'deliveryStarted'
         },
         {
-          label: 'Giao hàng thành công',
+          label: 'Đã giao',
           status: this.orderTimestamps.orderArrived ? 'completed' : 'pending',
           statusDescription: 'Giao hàng thành công!',
           timestampKey: 'orderArrived'
@@ -366,7 +287,7 @@ export default {
     },
 
     toggleAuthMode() {
-      // 모드 전환 전에 이전 이벤트 리스너 제거
+      // 모드 전환 전에 이 이벤트 리스너 제거
       this.removeAuthEventListeners();
       this.showSignup = !this.showSignup;
       this.resetForm();
@@ -396,8 +317,13 @@ export default {
       this.resetForm();
     },
 
-    toggleAboutUs() {
-      this.showAboutUs = !this.showAboutUs;
+    goToHome() {
+      this.$emit('show-home');
+      this.showAboutUs = false;
+      this.showLogin = false;
+      this.showProfileModal = false;
+      this.showEditProfileModal = false;
+      this.showOrderStatusModal = false;
     },
     closeAboutUs() {
       this.showAboutUs = false;
@@ -406,7 +332,6 @@ export default {
     async handleSignup(event) {
       event.preventDefault();
       console.log('Signup process started'); 
-     
       
       if (!this.username || !this.fullName || !this.email || !this.password) {
         this.$refs.toast.showToast('All fields are required', 'error');
@@ -419,21 +344,21 @@ export default {
       }
 
       const formData = new FormData();
-        formData.append('username', this.username);
-        formData.append('email', this.email);
-        formData.append('fullname', this.fullName);
-        formData.append('password', this.password);
+      formData.append('username', this.username);
+      formData.append('email', this.email);
+      formData.append('fullname', this.fullName);
+      formData.append('password', this.password);
 
       try {
         console.log("-------------------------------------- start")
-        await axios.post('http://localhost:8080/api/register', formData, {
+        const response = await axios.post('http://localhost:8080/api/register', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
         console.log("-------------------------------------- end")
 
-        console.log('Signup response:', response.data); 
+        // console.log('Signup response:', response.data); 
 
         const { access_token, token_type } = response.data;
         this.token = access_token || response.data.token; 
@@ -441,26 +366,29 @@ export default {
         localStorage.setItem('username', this.username);
         
         this.isLoggedIn = true;
-        //await this.fetchUserProfile();
         
         this.$refs.toast.showToast('Account created and logged in successfully!', 'success');
         this.showLogin = false;
         this.showSignup = false;
         this.resetForm();
+        
+        this.$emit('login-state-change', true);
+        this.$emit('show-restaurants');
+
       } catch (error) {
-          console.error('Signup error:', error.response?.data);
-          const errorMessage = error.response?.data?.detail || 'Registration failed';
-          this.$refs.toast.showToast(errorMessage, 'error');
+        // console.error('Signup error:', error.response?.data);
+        const errorMessage = error.response?.data?.detail || 'Registration failed';
+        this.$refs.toast.showToast(errorMessage, 'error');
       }
     },
 
     async handleLogin(event) {
+      
       event.preventDefault();
       console.log('Login process started'); 
       const formData = new FormData();
       formData.append('username', this.username);
       formData.append('password', this.password);
-
       try {
         const response = await axios.post('http://localhost:8080/api/login', formData, {
           headers: {
@@ -475,16 +403,22 @@ export default {
         localStorage.setItem('token', access_token);
         
         this.isLoggedIn = true;
-        this.username = this.username;
-        
-        this.$refs.toast.showToast(`Welcome back, ${this.username}!`, 'success');
+      
+        this.$refs.toast.showToast('Account created and logged in successfully!', 'success');
         this.showLogin = false;
+        this.showSignup = false;
         this.resetForm();
+        
+        this.$emit('login-state-change', true);
+        this.$emit('show-restaurants');
+      
+        
       } catch (error) {
         console.error('Login error:', error);
         const errorMessage = error.response?.data?.detail || 'Invalid username or password';
         this.$refs.toast.showToast(errorMessage, 'error');
       }
+
     },
 
     resetForm() {
@@ -498,11 +432,18 @@ export default {
     logout() {
       this.isLoggedIn = false;
       this.token = null;
-      localStorage.removeItem('token');
       this.username = '';
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      
       this.showProfileModal = false;
       this.showEditProfileModal = false;
+      
       this.$refs.toast.showToast('Logged out successfully', 'success');
+      
+      this.$emit('login-state-change', false);
+      
+      this.$emit('navigate', 'home');
     },
     toggleProfileModal() {
       this.showProfileModal = !this.showProfileModal;
@@ -523,9 +464,9 @@ export default {
       if (this.newUsername) formData.append('username', this.newUsername);
       if (this.newEmail) formData.append('email', this.newEmail);
       if (this.newPassword) formData.append('password', this.newPassword);
-
+      console.log("467",this.token)
       try {
-        await axios.put('http://localhost:8080/api/updateProfile', formData, {
+        const response = await axios.post('http://localhost:8080/api/updateProfile', formData, {
           headers: {
             'Authorization': `Bearer ${this.token}`,
             'Content-Type': 'multipart/form-data',
@@ -552,9 +493,15 @@ export default {
         this.newPassword = '';
         this.newEmail = '';
       } catch (error) {
-        console.error('Profile update error:', error.response?.data);
-        const errorMessage = error.response?.data?.detail || 'Failed to update profile';
-        this.$refs.toast.showToast(errorMessage, 'error');
+        // console.error('Profile update error:', error.response?.data);
+        // const errorMessage = error.response?.data?.detail || 'Failed to update profile';
+        // this.$refs.toast.showToast(errorMessage, 'error');
+        if (error.response?.status === 401) {
+          this.$refs.toast.showToast('Session expired. Please log in again.', 'error');
+          // Xử lý đăng nhập lại, ví dụ: chuyển hướng đến trang đăng nhập
+        } else {
+          this.$refs.toast.showToast(error.response?.data?.detail || 'Failed to update profile', 'error');
+        }
       }
     },
     closeEditProfile() {
