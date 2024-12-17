@@ -73,6 +73,26 @@ def main():
             {"name": "Quán Bún Bò Huế O Xuân", "description": "Bún bò Huế đậm đà hương vị miền Trung", "image": "restaurants/quan_bun_bo_hue_o_xuan.png"},
             {"name": "Nhà hàng Phố Biển", "description": "Hải sản tươi sống chế biến hấp dẫn, đậm vị biển cả", "image": "restaurants/nha_hang_pho_bien.png"},
             {"name": "Nhà hàng Hội An", "description": "Đặc sản miền Trung, mang phong cách phố cổ", "image": "restaurants/nha_hang_hoi_an.png"},
+            {"name": "Nhà hàng Sen Tây Hồ", "description": "Buffet cao cấp với hàng trăm món ăn từ Á đến Âu, không gian sang trọng", "image": "restaurants/nha_hang_sen_tay_ho.png"},
+            {"name": "Lẩu nấm Ashima", "description": "Lẩu nấm bổ dưỡng, phong cách ẩm thực Nhật Bản tinh tế", "image": "restaurants/lau_nam_ashima.png"},
+            {"name": "Nhà hàng Sumo Yakiniku", "description": "Nướng lẩu Nhật Bản phong cách Yakiniku, nguyên liệu thượng hạng", "image": "restaurants/nha_hang_sumo_yakiniku.png"},
+            {"name": "Quán Lẩu Phan", "description": "Lẩu buffet bình dân với nhiều mức giá, đa dạng món ăn", "image": "restaurants/quan_lau_phan.png"},
+            {"name": "Nhà hàng Ngon Garden", "description": "Không gian vườn thoáng đãng, các món Việt truyền thống hấp dẫn", "image": "restaurants/nha_hang_ngon_garden.png"},
+            {"name": "Nhà hàng Moo Beef Steak", "description": "Thịt bò nhập khẩu, chuyên các món steak đẳng cấp Âu Mỹ", "image": "restaurants/nha_hang_moo_beef_steak.png"},
+            {"name": "Quán Nét Huế", "description": "Đặc sản miền Trung với không gian giản dị và gần gũi", "image": "restaurants/quan_net_hue.png"},
+            {"name": "Nhà hàng Quán Ăn Ngon", "description": "Ẩm thực ba miền với hương vị truyền thống khó quên", "image": "restaurants/nha_hang_quan_an_ngon.png"},
+            {"name": "Nhà hàng Al Fresco's", "description": "Pizza, pasta và món Tây ngon miệng trong không gian hiện đại", "image": "/restaurants/nha_hang_fresco.png"},
+            {"name": "Nhà hàng Hẻm Quán", "description": "Ẩm thực đường phố với các món ăn dân dã, độc đáo", "image": "restaurants/nha_hang_hem_quan.png"},
+            {"name": "Nhà hàng Gogi House", "description": "Thịt nướng Hàn Quốc chính gốc với nhiều món ăn kèm hấp dẫn", "image": "restaurants/nha_hang_gogi_house.png"},
+            {"name": "Nhà hàng King BBQ", "description": "Buffet nướng Hàn Quốc với nước sốt bí truyền thơm ngon", "image": "restaurants/nha_hang_king_bbq.png"},
+            {"name": "Nhà hàng Manwah", "description": "Lẩu Đài Loan tinh tế với nhiều loại nước dùng đặc trưng", "image": "restaurants/nha_hang_manwah.png"},
+            {"name": "Nhà hàng Kichi-Kichi", "description": "Buffet lẩu băng chuyền đa dạng, phong cách hiện đại", "image": "restaurants/nha_hang_kichi_kichi.png"},
+            {"name": "Nhà hàng Pepperonis", "description": "Pizza, pasta và các món Âu đơn giản nhưng ngon miệng", "image": "restaurants/nha_hang_pepperonis.png"},
+            {"name": "Nhà hàng Ẩm Thực Việt", "description": "Các món Việt truyền thống với nguyên liệu tươi ngon", "image": "restaurants/nha_hang_am_thuc_viet.png"},
+            {"name": "Nhà hàng Chả Cá Lã Vọng", "description": "Chả cá Hà Nội đặc sản với lịch sử hàng trăm năm", "image": "restaurants/nha_hang_cha_ca_la_vong.png"},
+            {"name": "Nhà hàng Lẩu Cua Đồng", "description": "Lẩu cua đồng đậm vị đồng quê Việt Nam", "image": "restaurants/nha_hang_lau_cua_dong.png"},
+            {"name": "Quán Bánh Xèo Ba Miền", "description": "Bánh xèo giòn rụm từ Bắc, Trung, Nam", "image": "restaurants/quan_banh_xem_ba_mien.png"},
+            {"name": "Nhà hàng Tokyo Deli", "description": "Ẩm thực Nhật Bản với sushi, sashimi tươi ngon", "image": "restaurants/nha_hang_tokyo_deli.png"}
         ]
 
     # # Sample data for foods
