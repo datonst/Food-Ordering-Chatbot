@@ -2,7 +2,6 @@
 
 1. chatbot-TTNM ứng dụng đặt đồ ăn bằng giọng nói
 2. Thiết lập ứng dụng trọng máy
-3. Cách thức hoạt động
 ---
 ---
 # 1. chatbot-TTNM ứng dụng đặt đồ ăn bằng giọng nói
@@ -41,4 +40,4 @@ chatbot-TTNM là một dự án chatbot đơn giản được thiết kế cho k
     + Heroku, AWS Elastic Beanstalk, hoặc Google Cloud Run.
     + Đảm bảo upload .env và cấu hình đúng biến môi trường.
 
-# 3. Cách thức hoạt động
+
